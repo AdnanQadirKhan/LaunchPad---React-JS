@@ -18,28 +18,28 @@ import CreateLock from './CreateLock'
 import RequestAudit from './RequestAudit'
 import RequestKYC from './RequestKYC'
 import ReportPresale from './ReportPresale'
-
+import React from "react";
 const routes = [
-    { path: '/', component: <Home01 />},
-    { path: '/home-02', component: <Home02 />},
-    { path: '/explore-01', component: <Explore01 />},
-    { path: '/explore-02', component: <Explore02 />},
-    { path: '/creator', component: <Creator />},
-    { path: '/item', component: <Item />},
-    { path: '/item-details', component: <ItemDetails />},
-    { path: '/blog', component: <Blog />},
-    { path: '/blog-details', component: <BlogDetails />},
-    { path: '/authors', component: <Authors />},
-    { path: '/connect-wallet', component: <ConnectWallet />},
-    { path: '/create-presale', component: <CreatePresale />},
-    { path: '/login', component: <Login />},
-    { path: '/register', component: <Register />},
-    { path: '/contact', component: <Contact />},
-    { path: '/create-airdrop', component: <CreateAirdrop />},
-    { path: '/create-lock', component: <CreateLock />},
-    { path: '/report-presale', component: <ReportPresale />},
-    { path: '/request-audit', component: <RequestAudit />},
-    { path: '/request-kyc', component: <RequestKYC />}
+    { path: '/', component: <Home01 /> },
+    { path: '/home-02', component: <Home02 /> },
+    { path: '/explore-01', component: <Explore01 /> },
+    { path: '/explore-02', component: <Explore02 /> },
+    { path: '/creator', component: <Creator /> },
+    { path: '/item', component: <Item /> },
+    { path: '/item-details', component: <ItemDetails /> },
+    { path: '/blog', component: <Blog /> },
+    { path: '/blog-details', component: <BlogDetails /> },
+    { path: '/authors', component: <Authors /> },
+    { path: '/connect-wallet', component: <ConnectWallet /> },
+    { path: '/create-presale', component: <CreatePresale /> },
+    { path: '/login', component: <Login /> },
+    { path: '/register', component: <Register /> },
+    { path: '/contact', component: <Contact /> },
+    { path: '/create-airdrop', component: <CreateAirdrop /> },
+    { path: '/create-lock', component: <CreateLock /> },
+    { path: '/report-presale', component: <ReportPresale /> },
+    { path: '/request-audit', component: <RequestAudit /> },
+    { path: '/request-kyc', component: <RequestKYC /> }
 
 ]
 
