@@ -26,7 +26,6 @@ const Create = () => {
       [e.target.name]: e.target.value,
     });
   };
-  console.log(kyc);
   return (
     <section className="tf-section create-item pd-top-0 mg-t-40">
       <div className="container">
