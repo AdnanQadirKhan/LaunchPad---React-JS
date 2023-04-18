@@ -4,29 +4,42 @@ import { enqueueSnackbar } from "notistack";
 import http from "./../../../Services/httpService";
 const Create = () => {
   const [kyc, setKyc] = useState({
-    name: "",
-    email: "",
-    presaleLink: "",
+    name: null,
+    email: null,
+    presaleLink: null,
   });
   const handleAdd = () => {
     const { name, email, presaleLink } = kyc;
-    if (name === null || email === null || presaleLink === null) {
+    if (
+      name === null ||
+      name.trim() === "" ||
+      email === null ||
+      email.trim() === "" ||
+      presaleLink === null ||
+      presaleLink.trim() === ""
+    ) {
       enqueueSnackbar("All fields are required", { variant: "info" });
       return;
     }
-    http.post("kyc", kyc).then((res) => {
-      console.log(res);
-      setKyc({
-        name: "",
-        email: "",
-        presaleLink: "",
+    http
+      .post("kyc", kyc)
+      .then((res) => {
+        console.log(res);
+        setKyc({
+          name: "",
+          email: "",
+          presaleLink: "",
+        });
+        enqueueSnackbar("Successfully added", { variant: "success" });
+        return;
+      })
+      .catch((error) => {
+        console.log(error);
+        enqueueSnackbar("Error adding KYC: " + error.message, {
+          variant: "error",
+        });
+        return;
       });
-      enqueueSnackbar("Successfully added", { variant: "success" });
-
-    }).catch((error) => {
-      console.log(error);
-      enqueueSnackbar("Error adding KYC: " + error.message, { variant: "error" });
-    });
     return false;
   };
   const handleChange = (e) => {
@@ -48,9 +61,9 @@ const Create = () => {
                 </div>
                 <div
                   id="create-item-1"
-                // action="#"
-                // method="GET"
-                // acceptCharset="utf-8"
+                  // action="#"
+                  // method="GET"
+                  // acceptCharset="utf-8"
                 >
                   {/* <label className="uploadFile">
                                     <span className="filename">Upload PDF</span>

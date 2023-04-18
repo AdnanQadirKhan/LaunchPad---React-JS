@@ -18,7 +18,11 @@ const Create = () => {
     http.post("lock", lock).then((res) => {
       console.log(res.data);
       enqueueSnackbar("Successfully added", { variant: "success" });
-      setLock({});
+      setLock({
+        tokenAddress: null,
+        tokenAmount: null,
+        unlockTime: null,
+      });
     });
     return false;
   };
@@ -39,7 +43,7 @@ const Create = () => {
                   <h3>Liquidity Lockup</h3>
                   <p className="desc">Lock your token's liquidity!</p>
                 </div>
-                <form id="create-item-1" action="#" acceptCharset="utf-8">
+                <div id="create-item-1" action="#" acceptCharset="utf-8">
                   {/* <label className="uploadFile">
                                     <span className="filename">Choose Item</span>
                                     <input type="file" className="inputfile form-control" name="file" />
@@ -53,7 +57,7 @@ const Create = () => {
                     <input
                       name="tokenAddress"
                       type="text"
-                      value={lock.tokenAddress}
+                      value={lock.tokenAddress || ""}
                       onChange={(e) => handleChange(e)}
                       placeholder="Token Address"
                       required
@@ -65,7 +69,7 @@ const Create = () => {
                     <input
                       name="tokenAmount"
                       type="number"
-                      value={lock.tokenAmount}
+                      value={lock.tokenAmount || ""}
                       onChange={(e) => handleChange(e)}
                       placeholder="Token Amount"
                       required
@@ -77,7 +81,7 @@ const Create = () => {
                     <input
                       name="unlockTime"
                       type="datetime-local"
-                      value={lock.unlockTime}
+                      value={lock.unlockTime || ""}
                       onChange={(e) => handleChange(e)}
                       placeholder="Lock Until (time)"
                       required
@@ -116,7 +120,7 @@ const Create = () => {
                   >
                     <span>Lock Liquidity</span>{" "}
                   </button>
-                </form>
+                </div>
               </div>
               {/* <div className="form-background">
                             <img src={img} alt="Bidzen" />
