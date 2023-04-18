@@ -4,9 +4,9 @@ import { enqueueSnackbar } from "notistack";
 import http from "./../../../Services/httpService";
 const Create = () => {
   const [kyc, setKyc] = useState({
-    name: null,
-    email: null,
-    presaleLink: null,
+    name: "",
+    email: "",
+    presaleLink: "",
   });
   const handleAdd = () => {
     const { name, email, presaleLink } = kyc;
@@ -15,10 +15,19 @@ const Create = () => {
       return;
     }
     http.post("kyc", kyc).then((res) => {
-      console.log(res.data);
+      console.log(res);
+      setKyc({
+        name: "",
+        email: "",
+        presaleLink: "",
+      });
       enqueueSnackbar("Successfully added", { variant: "success" });
-      setKyc({});
+
+    }).catch((error) => {
+      console.log(error);
+      enqueueSnackbar("Error adding KYC: " + error.message, { variant: "error" });
     });
+    return false;
   };
   const handleChange = (e) => {
     setKyc({
@@ -37,11 +46,11 @@ const Create = () => {
                   <h3>KYC Request</h3>
                   <p className="desc">Request KYC badge for your presale</p>
                 </div>
-                <form
+                <div
                   id="create-item-1"
-                  action="#"
-                  method="GET"
-                  acceptCharset="utf-8"
+                // action="#"
+                // method="GET"
+                // acceptCharset="utf-8"
                 >
                   {/* <label className="uploadFile">
                                     <span className="filename">Upload PDF</span>
@@ -122,15 +131,15 @@ const Create = () => {
                                     </div> */}
                   </div>
                   <button
-                    name="submit"
-                    type="submit"
-                    id="submit"
+                    // name="submit"
+                    // type="submit"
+                    // id="submit"
                     onClick={handleAdd}
                     className="sc-button style letter style-2"
                   >
                     <span>Submit KYC Request</span>{" "}
                   </button>
-                </form>
+                </div>
               </div>
               {/* <div className="form-background">
                             <img src={img} alt="Bidzen" />
