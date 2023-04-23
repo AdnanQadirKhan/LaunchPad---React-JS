@@ -68,6 +68,10 @@ const Header = () => {
   // const requestAccount = async(ethProvider: any) : Promise<Array<string>>
   const isSticky = (e) => {
     const header = document.querySelector(".js-header");
+    // if (!header) {
+    //   // The .js-header element was not found, so we can't proceed with the sticky logic
+    //   return;
+    // }
     const scrollTop = window.scrollY;
 
     scrollTop >= 100

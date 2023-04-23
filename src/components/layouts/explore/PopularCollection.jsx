@@ -145,7 +145,7 @@ const PopularCollection = (props) => {
                 </div>
                 <div className="product-img">
                   {/* <img src={item.img} alt="Bidzen" /> */}
-                  <Link to="#" className="sc-button style letter">
+                  <Link to={`/explore-01/${item._id}`} className="sc-button style letter">
                     <span>View presale</span>
                   </Link>
                   {/* <label>{item.tags}</label> 

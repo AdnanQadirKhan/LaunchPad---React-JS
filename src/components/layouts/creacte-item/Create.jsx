@@ -5,7 +5,6 @@ import http from "./../../../Services/httpService";
 
 const Create = () => {
 
-
     const [presale, setPresale] = useState({
         contractAddress: "",
         rate: "",
@@ -16,7 +15,7 @@ const Create = () => {
         maximum: "",
         liquidity: "",
         liquidityDate: "",
-        hasPresale: "",
+        // hasPresale: "",
         whitelistAddress: "",
         endTime: "",
         startTime: "",
@@ -35,21 +34,52 @@ const Create = () => {
         reddit: "",
     });
     const handleAdd = () => {
-        const { contractAddress, rate, listingRate, liquidity } = presale;
-        if (
-            contractAddress === "" ||
-            rate === "" ||
-            listingRate === "" ||
-            liquidity === ""
-        ) {
+        const { contractAddress, rate, listingRate, softcap, hardcap, minimum, maximum, liquidity, liquidityDate,  whitelistAddress, endTime, startTime, projectName, projectDescription, websiteLink, logo, videoLink, youtube, twitter, linkedin, telegram, discord, github, instagram, reddit   } = presale;
+        if (contractAddress === null || contractAddress.trim() === "" || rate === null || rate.trim() === "" || listingRate === null || listingRate.trim() === "" || liquidity === null || liquidity.trim() === "") {
             enqueueSnackbar("All fields are required", { variant: "info" });
             return;
         }
         http.post("presale", presale).then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
+            setPresale({
+                contractAddress: "",
+                rate: "",
+                listingRate: "",
+                softcap: "",
+                hardcap: "",
+                minimum: "",
+                maximum: "",
+                liquidity: "",
+                liquidityDate: "",
+                // hasPresale: "",
+                whitelistAddress: "",
+                endTime: "",
+                startTime: "",
+                projectName: "",
+                projectDescription: "",
+                websiteLink: "",
+                logo: "",
+                videoLink: "",
+                youtube: "",
+                twitter: "",
+                linkedin: "",
+                telegram: "",
+                discord: "",
+                github: "",
+                instagram: "",
+                reddit: "",
+            });
             enqueueSnackbar("Successfully added", { variant: "success" });
-            setPresale({});
-        });
+            return;
+        })
+        .catch((error) => {
+            console.log(error);
+            enqueueSnackbar("Error adding Presale: " + error.message, {
+              variant: "error",
+            });
+            return;
+          });
+        return false;
     };
     const handleChange = (e) => {
         setPresale({
@@ -77,11 +107,13 @@ const Create = () => {
                                     <span className="icon"><i className="far fa-cloud-upload"></i></span>
                                 </label> */}
                                     <div className="input-group">
-                                        <input id="comment-message"
-                                            name="contract_address"
+                                        <input
+                                            // id="comment-message"
+                                            name="contractAddress"
                                             onChange={(e) => handleChange(e)}
                                             type="text"
-                                            placeholder="Contract Address" required
+                                            placeholder="Contract Address"
+                                            required
                                         />
                                     </div>
                                     <p className="desc"> .</p>
@@ -146,15 +178,15 @@ const Create = () => {
                                             placeholder="Unlock Date" required />
                                     </div>
                                     <div className="input-group style-2 ">
-                                        <div className="btn-check">
+                                        {/* <div className="btn-check">
                                             <input
                                                 type="radio"
                                                 onChange={(e) => handleChange(e)}
 
-                                                id="sale"
+                                                id="hasPresale"
                                                 name="hasPresale:" />
                                             <label htmlFor="sale">Whitelist Presale</label>
-                                        </div>
+                                        </div> */}
                                         {/* <div className="btn-check">
                                         <input type="radio" id="price" name="fav_language" />
                                         <label htmlFor="price">
@@ -169,7 +201,7 @@ const Create = () => {
                                     </div> */}
                                     </div>
                                     <textarea
-                                        id="comment-message"
+                                        id="whitelistAddress"
                                         name="whitelistAddress"
                                         onChange={(e) => handleChange(e)}
                                         tabIndex="4"
@@ -215,10 +247,19 @@ const Create = () => {
                                             placeholder="Project Description" aria-required="true"></textarea>
                                     </div>
                                     <div className="input-group">
-                                        <input id="comment-message" name="message" type="text" placeholder="Website Link" required />
+                                        <input 
+                                        id="websiteLink" 
+                                        name="websiteLink" 
+                                        type="text" 
+                                        onChange={(e) => handleChange(e)}
+
+                                        placeholder="Website Link" required />
                                         <label className="uploadFile">
                                             <span className="filename">Upload Logo</span>
-                                            <input type="file" className="inputfile form-control" name="logo"
+                                            <input 
+                                            type="file" 
+                                            className="inputfile form-control" 
+                                            name="logo"
                                                 onChange={(e) => handleChange(e)}
                                             />
                                             <span className="icon"><i className="far fa-cloud-upload"></i></span>
@@ -226,17 +267,35 @@ const Create = () => {
                                     </div>
                                     <p className="desc">Add link to your project's introduction YouTube video to be embedded on your presale page</p>
                                     <div className="input-group">
-                                        <input id="comment-message" name="message" type="text" placeholder="Introductory Video Link" required />
+                                        <input 
+                                        id="videoLink" 
+                                        name="videoLink" 
+                                        type="text" 
+                                        onChange={(e) => handleChange(e)}
+                                        placeholder="Introductory Video Link" 
+                                        required />
                                     </div>
                                     <p className="desc">Add your social links</p>
                                     <div className="input-group">
-                                        <input name="name" type="text" placeholder="YouTube" required />
-                                        <input name="name" type="text" placeholder="Twitter" required />
+                                        <input name="youtube" 
+                                        type="text" 
+                                        placeholder="YouTube" 
+                                        onChange={(e) => handleChange(e)}
+                                        required />
+                                        <input 
+                                        name="twitter" 
+                                        type="text" 
+                                        onChange={(e) => handleChange(e)}
+                                        placeholder="Twitter" required />
                                     </div>
                                     <div className="input-group">
                                         <input
-                                            name="telegram" type="text" placeholder="Telegram" required />
-                                        <input name="discord"
+                                            name="telegram" 
+                                            type="text" 
+                                            onChange={(e) => handleChange(e)}
+                                            placeholder="Telegram" required />
+                                        <input 
+                                        name="discord"
                                             onChange={(e) => handleChange(e)}
                                             type="text" placeholder="Discord"
                                             required />
@@ -286,7 +345,7 @@ const Create = () => {
                                         // id="submit"
                                         onClick={handleAdd}
 
-                                        className="sc-button style letter style-2"><span>Create Presale</span> </button>
+                                        className="sc-button style letter style-2"><span>Create Presale</span>{" "} </button>
                                 </div>
                             </div>
                             {/* <div className="form-background">

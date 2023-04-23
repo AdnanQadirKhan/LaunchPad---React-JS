@@ -1,23 +1,24 @@
 import Home01 from "./Home01";
 import Home02 from "./Home02";
-import Explore01 from './Explore01'
-import Explore02 from './Explore02'
-import Creator from './Creator'
-import Item from './Item'
-import ItemDetails from './ItemDetails'
-import Blog from './Blog'
-import BlogDetails from './BlogDetails'
-import Authors from './Authors'
-import ConnectWallet from './ConnectWallet'
-import CreatePresale from './CreatePresale'
-import Login from './Login'
-import Register from './Register'
-import Contact from './Contact'
-import CreateAirdrop from './CreateAirdrop'
-import CreateLock from './CreateLock'
-import RequestAudit from './RequestAudit'
-import RequestKYC from './RequestKYC'
-import ReportPresale from './ReportPresale'
+import Explore01 from './Explore01';
+import Explore02 from './Explore02';
+import Creator from './Creator';
+import Item from './Item';
+import ItemDetails from './ItemDetails';
+import Blog from './Blog';
+import BlogDetails from './BlogDetails';
+import Authors from './Authors';
+import ConnectWallet from './ConnectWallet';
+import CreatePresale from './CreatePresale';
+import Login from './Login';
+import Register from './Register';
+import Contact from './Contact';
+import CreateAirdrop from './CreateAirdrop';
+import CreateLock from './CreateLock';
+import RequestAudit from './RequestAudit';
+import RequestKYC from './RequestKYC';
+import ReportPresale from './ReportPresale';
+import ViewPresale from './ViewPresale';
 import React from "react";
 const routes = [
     { path: '/', component: <Home01 /> },
@@ -39,7 +40,8 @@ const routes = [
     { path: '/create-lock', component: <CreateLock /> },
     { path: '/report-presale', component: <ReportPresale /> },
     { path: '/request-audit', component: <RequestAudit /> },
-    { path: '/request-kyc', component: <RequestKYC /> }
+    { path: '/request-kyc', component: <RequestKYC /> },
+    { path: '/explore-01/:id', component: <ViewPresale /> },
 
 ]
 

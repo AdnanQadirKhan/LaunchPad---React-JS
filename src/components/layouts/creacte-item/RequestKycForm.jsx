@@ -21,9 +21,7 @@ const Create = () => {
       enqueueSnackbar("All fields are required", { variant: "info" });
       return;
     }
-    http
-      .post("kyc", kyc)
-      .then((res) => {
+    http.post("kyc", kyc).then((res) => {
         console.log(res);
         setKyc({
           name: "",

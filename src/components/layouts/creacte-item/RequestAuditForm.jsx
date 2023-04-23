@@ -7,24 +7,41 @@ const Create = () => {
     name: null,
     email: null,
     presaleLink: null,
-    auditReportLink: null,
   });
   const handleAdd = () => {
     const { name, email, presaleLink, auditReportLink } = audit;
     if (
       name === null ||
+      name.trim() === "" ||
       email === null ||
+      email.trim() === "" ||
       presaleLink === null ||
-      auditReportLink == null
+      presaleLink.trim() === "" || 
+      auditReportLink ===null || 
+      auditReportLink.trim() === ""
     ) {
       enqueueSnackbar("All fields are required", { variant: "info" });
       return;
     }
     http.post("audit", audit).then((res) => {
-      console.log(res.data);
-      enqueueSnackbar("Successfully added", { variant: "success" });
-      setAudit({});
-    });
+        console.log(res);
+        setAudit({
+          name: "",
+          email: "",
+          presaleLink: "",
+          auditReportLink: ""
+        });
+        enqueueSnackbar("Successfully added", { variant: "success" });
+        return;
+      })
+      .catch((error) => {
+        console.log(error);
+        enqueueSnackbar("Error adding Audit: " + error.message, {
+          variant: "error",
+        });
+        return;
+      });
+    return false;
   };
   const handleChange = (e) => {
     setAudit({
