@@ -9,6 +9,7 @@ const PopularCollection = (props) => {
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 4);
   };
+  const id = 1231;
   // const [presaleStatus, setPresaleSatus] = userState('Upcoming')
   return (
     <section className="tf-section trendy-colection-page style-2">
@@ -145,7 +146,10 @@ const PopularCollection = (props) => {
                 </div>
                 <div className="product-img">
                   {/* <img src={item.img} alt="Bidzen" /> */}
-                  <Link to={`/explore-01/${item._id}`} className="sc-button style letter">
+                  <Link
+                    to={`/presale/view/${id}`}
+                    className="sc-button style letter"
+                  >
                     <span>View presale</span>
                   </Link>
                   {/* <label>{item.tags}</label> 
