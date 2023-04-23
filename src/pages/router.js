@@ -20,7 +20,6 @@ import RequestKYC from './RequestKYC';
 import ReportPresale from './ReportPresale';
 import ViewPresale from './ViewPresale';
 import React from "react";
-import ViewPresale from './ViewPresale';
 const routes = [
     { path: '/', component: <Home01 /> },
     { path: '/home-02', component: <Home02 /> },

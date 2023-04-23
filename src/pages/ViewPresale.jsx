@@ -6,8 +6,9 @@ import TopSeller from "../components/layouts/creacte-item/TopSeller";
 import Create from "../components/layouts/creacte-item/Create";
 import { Newsletters } from "../components/layouts/home/Newsletters";
 import Footer from "../components/footer/FooterStyle2";
+import ViewPresale from "../components/layouts/creacte-item/ViewPresaleForm"
 
-const ViewPresale = () => {
+const CreateItem = () => {
   const { id } = useParams();
   return (
     <div>
@@ -35,11 +36,11 @@ const ViewPresale = () => {
         </div>
       </section>
       {/* <TopSeller data={dataHotCollection2} /> */}
-      {/* <Create /> */}
-      {/* <Newsletters /> */}
+      <ViewPresale />
+      <Newsletters />
       <Footer />
     </div>
   );
 };
 
-export default ViewPresale;
+export default CreateItem;
