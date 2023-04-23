@@ -19,6 +19,7 @@ import RequestAudit from './RequestAudit'
 import RequestKYC from './RequestKYC'
 import ReportPresale from './ReportPresale'
 import React from "react";
+import ViewPresale from './ViewPresale';
 const routes = [
     { path: '/', component: <Home01 /> },
     { path: '/home-02', component: <Home02 /> },
@@ -39,7 +40,8 @@ const routes = [
     { path: '/create-lock', component: <CreateLock /> },
     { path: '/report-presale', component: <ReportPresale /> },
     { path: '/request-audit', component: <RequestAudit /> },
-    { path: '/request-kyc', component: <RequestKYC /> }
+    { path: '/request-kyc', component: <RequestKYC /> },
+    { path: '/presale/view/:id', component: <ViewPresale /> }
 
 ]
 
