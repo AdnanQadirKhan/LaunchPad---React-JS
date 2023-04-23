@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../components/header/Header";
 import dataHotCollection2 from "../assets/fake-data/dataHotCollection2";
 import TopSeller from "../components/layouts/creacte-item/TopSeller";
-import Create from "../components/layouts/creacte-item/Create";
 import { Newsletters } from "../components/layouts/home/Newsletters";
 import Footer from "../components/footer/FooterStyle2";
 import ViewPresale from "../components/layouts/creacte-item/ViewPresaleForm"
+import http from "../Services/httpService";
+
 
 const CreateItem = () => {
+  const [list, setList] = useState([]);
+  console.log(list);
   const { id } = useParams();
+  
+  useEffect(() => {
+    http.get(`/presale/${id}`).then((res) => setList(res.data));
+  }, []);
   return (
     <div>
       <Header />
@@ -36,7 +43,7 @@ const CreateItem = () => {
         </div>
       </section>
       {/* <TopSeller data={dataHotCollection2} /> */}
-      <ViewPresale />
+      <ViewPresale data={list} />
       <Newsletters />
       <Footer />
     </div>

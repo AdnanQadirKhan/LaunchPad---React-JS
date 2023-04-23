@@ -41,7 +41,7 @@ const routes = [
     { path: '/report-presale', component: <ReportPresale /> },
     { path: '/request-audit', component: <RequestAudit /> },
     { path: '/request-kyc', component: <RequestKYC /> },
-    { path: '/presale/view/:id', component: <ViewPresale /> }
+    { path: '/presale/:id', component: <ViewPresale /> }
 
 ]
 

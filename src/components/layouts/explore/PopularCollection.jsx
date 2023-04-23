@@ -146,7 +146,7 @@ const PopularCollection = (props) => {
                 <div className="product-img">
                   {/* <img src={item.img} alt="Bidzen" /> */}
                   <Link
-                    to={`/presale/view/${item._id}`}
+                    to={`/presale/${item._id}`}
                     className="sc-button style letter"
                   >
                     <span>View presale</span>
