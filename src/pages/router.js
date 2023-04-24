@@ -21,6 +21,7 @@ import RequestKYC from './RequestKYC';
 import ReportPresale from './ReportPresale';
 import ViewPresale from './ViewPresale';
 import React from "react";
+import ViewAlert from "./ViewAlert";
 const routes = [
     { path: '/', component: <Home01 /> },
     { path: '/home-02', component: <Home02 /> },
@@ -43,7 +44,8 @@ const routes = [
     { path: '/report-presale', component: <ReportPresale /> },
     { path: '/request-audit', component: <RequestAudit /> },
     { path: '/request-kyc', component: <RequestKYC /> },
-    { path: '/presale/:id', component: <ViewPresale /> }
+    { path: '/presale/:id', component: <ViewPresale /> },
+    { path: '/alerts/', component: <ViewAlert /> }
 
 ]
 

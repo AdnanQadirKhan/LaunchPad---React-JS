@@ -5,15 +5,14 @@ import dataHotCollection2 from "../assets/fake-data/dataHotCollection2";
 import TopSeller from "../components/layouts/creacte-item/TopSeller";
 import { Newsletters } from "../components/layouts/home/Newsletters";
 import Footer from "../components/footer/FooterStyle2";
-import ViewPresale from "../components/layouts/explore/ViewPresaleForm"
+import ViewPresale from "../components/layouts/explore/ViewPresaleForm";
 import http from "../Services/httpService";
-
 
 const CreateItem = () => {
   const [list, setList] = useState([]);
   console.log(list);
   const { id } = useParams();
-  
+
   useEffect(() => {
     http.get(`/presale/${id}`).then((res) => setList(res.data));
   }, []);
