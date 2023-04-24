@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
-import dataHotCollection2 from "../assets/fake-data/dataHotCollection2";
-import TopSeller from "../components/layouts/creacte-item/TopSeller";
+import LatestCollection from "../components/layouts/explore/LatestCollection";
+import dataCollections from "../assets/fake-data/dataCollections";
+import ViewLocks from "../components/layouts/explore/ViewLocks";
+import dataPopularCollection from "../assets/fake-data/dataPopularCollection";
 import { Newsletters } from "../components/layouts/home/Newsletters";
 import Footer from "../components/footer/FooterStyle2";
-import ViewPresale from "../components/layouts/explore/ViewPresaleForm"
 import http from "../Services/httpService";
 
-
-const CreateItem = () => {
+const ViewLock = () => {
   const [list, setList] = useState([]);
   console.log(list);
-  const { id } = useParams();
-  
   useEffect(() => {
-    http.get(`/presale/${id}`).then((res) => setList(res.data));
+    http.get("lock").then((res) => setList(res.data));
   }, []);
   return (
-    <div>
+    <div className="explore">
       <Header />
       <section className="fl-page-title">
         <div className="overlay"></div>
@@ -27,14 +25,14 @@ const CreateItem = () => {
             <div className="col-md-12">
               <div className="page-title-inner flex">
                 <div className="page-title-heading">
-                  <h2 className="heading">View Presale</h2>
+                  <h2 className="heading">Locks</h2>
                 </div>
                 <div className="breadcrumbs">
                   <ul>
                     <li>
                       <Link to="/">Home</Link>
                     </li>
-                    <li>View Presale</li>
+                    <li>Locks</li>
                   </ul>
                 </div>
               </div>
@@ -42,12 +40,12 @@ const CreateItem = () => {
           </div>
         </div>
       </section>
-      {/* <TopSeller data={dataHotCollection2} /> */}
-      <ViewPresale data={list} />
+      {/* <LatestCollection data={dataCollections} /> */}
+      <ViewLocks data={list} />
       <Newsletters />
       <Footer />
     </div>
   );
 };
 
-export default CreateItem;
+export default ViewLock;

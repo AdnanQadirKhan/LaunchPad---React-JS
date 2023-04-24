@@ -191,7 +191,7 @@ const menus = [
             {
                 id: 2,
                 sub: 'View locks',
-                links: '#'
+                links: '/view-locks'
             },
             
         ],

@@ -12,13 +12,14 @@ const Create = (props) => {
         <section className="tf-section create-item pd-top-0 mg-t-40">
             <div className="row m-0 p-4">
 
-                    <div className="col col-lg-8 p-4 " style={{ backgroundColor: 'var(--color-3)' }}>
+                    <div className="col col-lg-8 p-4 my-2" style={{ backgroundColor: 'var(--color-3)' }}>
                         <div className="d-flex p-4">
 
                             <h3>{data.projectName}</h3>
                             <span className="badge badge-primary my-auto ml-4 mr-2">Audit</span>
                             <span className="badge badge-danger my-auto mx-2">KYC</span>
                             <span className="badge badge-success my-auto mx-2">Upcoming</span>
+                            <span className="my-auto mx-2"><i class="fa-solid fa-bell"></i></span>
                         </div>
                         <p className="p-4">{data.projectDescription}</p>
 
@@ -121,14 +122,14 @@ const Create = (props) => {
                     </div>
 
                 <div className="col col-lg-4">
-                    <div className="container p-4" style={{ backgroundColor: 'var(--color-3)' }}>
+                    <div className="container p-4 my-2" style={{ backgroundColor: 'var(--color-3)' }}>
                         <div className="text-center my-2">
-                            <h6>Presale Starts In </h6>
-                            <strong>
-                                <span className="p-2" style={{ borderRadius: '4px', backgroundColor: 'var(--red-button-bg-color)' }}>03</span>
-                                <span className="p-2" style={{ borderRadius: '4px', backgroundColor: 'var(--red-button-bg-color)' }}>01</span>
-                                <span className="p-2" style={{ borderRadius: '4px', backgroundColor: 'var(--red-button-bg-color)' }}>41</span>
-                                <span className="p-2" style={{ borderRadius: '4px', backgroundColor: 'var(--red-button-bg-color)' }}>36</span>
+                            <h6 className="my-4">Presale Starts In </h6>
+                            <strong className="mt-4">
+                                <span className="p-2 mx-2" style={{ borderRadius: '4px', backgroundColor: '#c73bf9' }}>03</span>
+                                <span className="p-2 mx-2" style={{ borderRadius: '4px', backgroundColor: '#c73bf9' }}>01</span>
+                                <span className="p-2 mx-2" style={{ borderRadius: '4px', backgroundColor: '#c73bf9' }}>41</span>
+                                <span className="p-2 mx-2" style={{ borderRadius: '4px', backgroundColor: '#c73bf9' }}>36</span>
                             </strong>
 
                             <div style={{ width: '0%', height: '15px', backgroundColor: 'rgb(72, 199, 116)' }}>

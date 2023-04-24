@@ -2,6 +2,7 @@ import Home01 from "./Home01";
 import Home02 from "./Home02";
 import Explore01 from './Explore01';
 import Explore02 from './Explore02';
+import ViewLock from './ViewLock';
 import Creator from './Creator';
 import Item from './Item';
 import ItemDetails from './ItemDetails';
@@ -25,6 +26,7 @@ const routes = [
     { path: '/home-02', component: <Home02 /> },
     { path: '/explore-01', component: <Explore01 /> },
     { path: '/explore-02', component: <Explore02 /> },
+    { path: '/view-locks', component: <ViewLock /> },
     { path: '/creator', component: <Creator /> },
     { path: '/item', component: <Item /> },
     { path: '/item-details', component: <ItemDetails /> },
