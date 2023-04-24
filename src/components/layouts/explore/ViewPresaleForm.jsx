@@ -19,7 +19,7 @@ const Create = (props) => {
                             <span className="badge badge-primary my-auto ml-4 mr-2">Audit</span>
                             <span className="badge badge-danger my-auto mx-2">KYC</span>
                             <span className="badge badge-success my-auto mx-2">Upcoming</span>
-                            <span className="my-auto mx-2"><i class="fa-solid fa-bell"></i></span>
+                            <span className="my-auto ml-auto "><i class="fa-solid fa-bell"></i></span>
                         </div>
                         <p className="p-4">{data.projectDescription}</p>
 
