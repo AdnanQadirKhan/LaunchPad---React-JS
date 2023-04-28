@@ -219,7 +219,7 @@ const menus = [
             {
                 id: 1,
                 sub: 'View alerts',
-                links: '#'
+                links: '/alerts/'
             },
         ],
     },
