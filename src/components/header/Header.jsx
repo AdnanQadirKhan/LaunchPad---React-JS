@@ -29,11 +29,13 @@ const Header = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState("Connect MetaMask");
+  console.log(defaultAccount)
   const [userBalance, setUserBalance] = useState(null);
   const [ConnButtonText, setConnButtonText] = useState("Connect MetaMask");
   useEffect(() => {
-    // checkConnectedWallets();
-  });
+     checkConnectedWallets();
+
+  },[]);
   const connectWallet = async () => {
     if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
       // this means that metamask is installed//
@@ -50,7 +52,7 @@ const Header = () => {
         });
         if (account.length > 0) {
           setDefaultAccount(
-            account[0].substring(0, 4) + "..." + account[0].substr(38)
+            account
           );
           setBarrer("|");
           setSpacer(" ");
@@ -203,7 +205,8 @@ const Header = () => {
                     <span>
                       {defaultAccount.length > 0
                         ? ` ${defaultAccount} ${"|"}${" "}${userBalance}${" "}ETH`
-                        : "Connect MetaMask"}
+                        : "Connect MetaMask"
+                      }
                     </span>
                     {/* <span >
                                         {defaultAccount.length >0
