@@ -191,7 +191,7 @@ const menus = [
             {
                 id: 2,
                 sub: 'View locks',
-                links: '#'
+                links: '/view-locks'
             },
             
         ],
@@ -219,7 +219,7 @@ const menus = [
             {
                 id: 1,
                 sub: 'View alerts',
-                links: '#'
+                links: '/alerts/'
             },
         ],
     },
@@ -241,7 +241,7 @@ const menus = [
             {
                 id: 1,
                 sub: 'View your presales',
-                links: '/presales'
+                links: '#'
             },
         ],
     },
