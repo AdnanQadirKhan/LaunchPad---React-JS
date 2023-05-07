@@ -58,7 +58,7 @@ const Create = () => {
                 console.log(sendTX)
                 const check = sendTX.toString()
                 console.log(check)
-                setStatus("successfully sent transaction")
+                ("successfully sent transaction")
             }
             catch (error) {
                 if(Address === '' ) {
