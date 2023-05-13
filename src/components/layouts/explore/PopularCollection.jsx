@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 
 const PopularCollection = (props) => {
@@ -10,6 +10,9 @@ const PopularCollection = (props) => {
     setVisible((prevValue) => prevValue + 4);
   };
   // const [presaleStatus, setPresaleSatus] = userState('Upcoming')
+    const location = useLocation();
+    const link = location.pathname.split("/").pop();
+  
   return (
     <section className="tf-section trendy-colection-page style-2">
       <div className="container">
@@ -143,25 +146,21 @@ const PopularCollection = (props) => {
                                         </div>
                                     </div> */}
                 </div>
-                <div className="product-img">
-                  {/* <img src={item.img} alt="Bidzen" /> */}
-                  <Link
-                    to={`/presale/${item._id}`}
-                    className="sc-button style letter"
-                  >
-                    <span>View presale</span>
-                  </Link>
-                  {/* <label>{item.tags}</label> 
-                                     <label>{item.tags2}</label> 
-                                    <p>hassan</p> 
-                                     <div className="avatar-box">
-                                        {
-                                            item.avtList.map((item,index) => (
-                                                <img key={index} src={item.img1} alt="Bidzen" />
-                                            ))
-                                        }
-                                    </div>  */}
-                </div>
+                {link === "edit-presale" ? (
+                  <div className="product-img">
+                    <Link to={`/edit-presale/${item._id}`} className="sc-button style letter">
+                      <span>Edit Presale</span>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="product-img">
+                    {/* <img src={item.img} alt="Bidzen" /> */}
+                    <Link to={`/admin/presale/${item._id}`} className="sc-button style letter">
+                      <span>View presale</span>
+                    </Link>
+                  </div>
+                )}
+
               </div>
             </div>
           ))}

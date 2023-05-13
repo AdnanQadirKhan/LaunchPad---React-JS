@@ -5,7 +5,7 @@ import logo from "../../assets/images/logo/logo_dark.png";
 import logo2x from "../../assets/images/logo/logo_dark@2x.png";
 import logolight from "../../assets/images/logo/logo.png";
 import logolight2x from "../../assets/images/logo/logo@2x.png";
-import menus from "../../pages/menu";
+import menus from "../../pages/menu-1";
 import DarkMode from "./DarkMode";
 import { ethers } from "ethers";
 
@@ -65,7 +65,7 @@ const Header = () => {
 
   const isSticky = (e) => {
     const header = document.querySelector(".js-header");
-
+    
     const scrollTop = window.scrollY;
 
     scrollTop >= 100
@@ -112,6 +112,7 @@ const Header = () => {
     setActiveIndex(index);
   };
 
+  //   window.ethereum.on("accountsChanged", accountChangedHandler);
 
   return (
     <div>
@@ -148,7 +149,8 @@ const Header = () => {
                     </Link>
                   </div>
                 </div>
-               
+                
+
                 <nav id="main-nav" className="main-nav" ref={menuLeft}>
                   <ul id="menu-primary-menu" className="menu">
                     {menus.map((data, index) => (
@@ -178,9 +180,16 @@ const Header = () => {
                     ))}
                   </ul>
                 </nav>
-                <div onClick={connectWallet} className="button-connect-wallet">
-                 
-                  <div className="sc-button wallet  style-2">
+                {/* <div onClick={connectWallet} className="button-connect-wallet"> */}
+                  {/* <button onClick = {connectWalletHandler}>
+                                    <span>
+                                    
+                                    </span>
+                                    <p>
+                                    {userBalance}
+                                    </p>
+                                </button> */}
+                  {/* <div className="sc-button wallet  style-2">
                     <img src={icon} alt="icon" />
                     <span>
                       {defaultAccount.length > 0
@@ -188,9 +197,9 @@ const Header = () => {
                         : "Connect MetaMask"
                       }
                     </span>
-                
-                  </div>
-                </div>
+
+                  </div> */}
+                {/* </div> */}
 
                 <DarkMode />
               </div>
