@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import img from '../../../assets/images/background/img-create-item.jpg';
 import { enqueueSnackbar } from "notistack";
 import http from "./../../../Services/httpService";
-import { useParams } from 'react-router-dom'; 
+import { useParams } from 'react-router-dom';
 
 const Create = () => {
     const { id } = useParams();
@@ -35,63 +35,31 @@ const Create = () => {
         reddit: "",
     });
     useEffect(() => {
-        const fetchData = async () => {
-          
-            http.get(`presale/${id}`).then(res=>{
+         http.get(`presale/${id}`).then(res => {
                 console.log(res.data);
                 setPresale(res.data);
-            } );
-           
-        };
-        fetchData();
-      }, [id]);
-      
+            });
+    }, [id]);
+
     const handleAdd = () => {
-        const { contractAddress, rate, listingRate, softcap, hardcap, minimum, maximum, liquidity, liquidityDate,  whitelistAddress, endTime, startTime, projectName, projectDescription, websiteLink, logo, videoLink, youtube, twitter, linkedin, telegram, discord, github, instagram, reddit   } = presale;
+        const { contractAddress, rate, listingRate, softcap, hardcap, minimum, maximum, liquidity, liquidityDate, whitelistAddress, endTime, startTime, projectName, projectDescription, websiteLink, logo, videoLink, youtube, twitter, linkedin, telegram, discord, github, instagram, reddit } = presale;
         if (contractAddress === null || contractAddress.trim() === "" || rate === null || rate.trim() === "" || listingRate === null || listingRate.trim() === "" || liquidity === null || liquidity.trim() === "") {
             enqueueSnackbar("All fields are required", { variant: "info" });
             return;
         }
-        http.post("presale", presale).then((res) => {
+        http.post(`presale/${id}`, presale).then((res) => {
             // console.log(res.data);
-            setPresale({
-                contractAddress: "",
-                rate: "",
-                listingRate: "",
-                softcap: "",
-                hardcap: "",
-                minimum: "",
-                maximum: "",
-                liquidity: "",
-                liquidityDate: "",
-                // hasPresale: "",
-                whitelistAddress: "",
-                endTime: "",
-                startTime: "",
-                projectName: "",
-                projectDescription: "",
-                websiteLink: "",
-                logo: "",
-                videoLink: "",
-                youtube: "",
-                twitter: "",
-                linkedin: "",
-                telegram: "",
-                discord: "",
-                github: "",
-                instagram: "",
-                reddit: "",
-            });
-            enqueueSnackbar("Successfully added", { variant: "success" });
+  
+            enqueueSnackbar("Successfully Updated", { variant: "success" });
             return;
         })
-        .catch((error) => {
-            console.log(error);
-            enqueueSnackbar("Error adding Presale: " + error.message, {
-              variant: "error",
+            .catch((error) => {
+                console.log(error);
+                enqueueSnackbar("Error updating Presale: " + error.message, {
+                    variant: "error",
+                });
+                return;
             });
-            return;
-          });
         return false;
     };
     const handleChange = (e) => {
@@ -146,6 +114,7 @@ const Create = () => {
                                             name="listingRate"
                                             onChange={(e) => handleChange(e)}
                                             type="number"
+                                            value={presale.listingRate}
                                             placeholder="Listing Rate" required />
                                     </div>
                                     <p className="desc">SoftCap is the minimum amount required for a successful presale, HardCap is the target limit of raised capital</p>
@@ -154,12 +123,13 @@ const Create = () => {
                                             name="softcap"
                                             onChange={(e) => handleChange(e)}
                                             type="number"
+                                            value={presale.softcap}
                                             placeholder="Softcap"
                                             required />
                                         <input
                                             name="hardcap"
                                             onChange={(e) => handleChange(e)}
-
+                                            value={presale.hardcap}
                                             type="number"
                                             placeholder="Hardcap" required />
                                     </div>
@@ -169,6 +139,7 @@ const Create = () => {
                                             name="minimum"
                                             onChange={(e) => handleChange(e)}
                                             type="number"
+                                            value={presale.minimum}
                                             placeholder="Minumum" required />
                                         <input
                                             name="maximum"
@@ -183,12 +154,14 @@ const Create = () => {
                                             name="liquidity"
                                             type="number" placeholder="Liquidity % for PancakeSwap"
                                             onChange={(e) => handleChange(e)}
+                                            value={presale.liquidity}
                                             required />
                                         <input
                                             name="liquidityDate"
                                             onChange={(e) => handleChange(e)}
+                                            value={new Date(presale.liquidityDate).toLocaleString('sv', { timeZone: 'UTC' }).replace(' ', 'T')}
 
-                                            type="date"
+                                            type="datetime-local"
                                             placeholder="Unlock Date" required />
                                     </div>
                                     <div className="input-group style-2 ">
@@ -219,6 +192,7 @@ const Create = () => {
                                         name="whitelistAddress"
                                         onChange={(e) => handleChange(e)}
                                         tabIndex="4"
+                                        value={presale.whitelistAddress}
                                         placeholder="Whitelisted Wallet Address list" aria-required="true"></textarea>
 
                                     <p className="desc"> .</p>
@@ -230,6 +204,7 @@ const Create = () => {
                                             name="startTime"
                                             type="datetime-local"
                                             onChange={(e) => handleChange(e)}
+                                            value={new Date(presale.startTime).toLocaleString('sv', { timeZone: 'UTC' }).replace(' ', 'T')}
                                             placeholder="Liquidity % for PancakeSwap" required />
                                     </div>
                                     <p className="desc">End Time:</p>
@@ -237,7 +212,9 @@ const Create = () => {
                                         <input
                                             name="endTime"
                                             onChange={(e) => handleChange(e)}
-                                            type="datetime-local" placeholder="Liquidity % for PancakeSwap" required />
+                                            type="datetime-local" placeholder="Liquidity % for PancakeSwap"
+                                            value={new Date(presale.endTime).toLocaleString('sv', { timeZone: 'UTC' }).replace(' ', 'T')}
+                                            required />
                                     </div>
 
                                     <p className="desc"> .</p>
@@ -250,6 +227,7 @@ const Create = () => {
                                             name="projectName"
                                             onChange={(e) => handleChange(e)}
                                             type="text"
+                                            value={presale.projectName}
                                             placeholder="Project Name" required />
                                     </div>
                                     <div className="input-group">
@@ -257,23 +235,25 @@ const Create = () => {
                                             id="projectDescription"
                                             onChange={(e) => handleChange(e)}
                                             name="projectDescription"
+                                            value={presale.projectDescription}
                                             tabIndex="4"
                                             placeholder="Project Description" aria-required="true"></textarea>
                                     </div>
                                     <div className="input-group">
-                                        <input 
-                                        id="websiteLink" 
-                                        name="websiteLink" 
-                                        type="text" 
-                                        onChange={(e) => handleChange(e)}
-
-                                        placeholder="Website Link" required />
+                                        <input
+                                            id="websiteLink"
+                                            name="websiteLink"
+                                            value={presale.websiteLink}
+                                            type="text"
+                                            onChange={(e) => handleChange(e)}
+                                            placeholder="Website Link" required />
                                         <label className="uploadFile">
                                             <span className="filename">Upload Logo</span>
-                                            <input 
-                                            type="file" 
-                                            className="inputfile form-control" 
-                                            name="logo"
+                                            <input
+                                                type="file"
+                                                // value={presale.logo}
+                                                className="inputfile form-control"
+                                                name="logo"
                                                 onChange={(e) => handleChange(e)}
                                             />
                                             <span className="icon"><i className="far fa-cloud-upload"></i></span>
@@ -281,35 +261,40 @@ const Create = () => {
                                     </div>
                                     <p className="desc">Add link to your project's introduction YouTube video to be embedded on your presale page</p>
                                     <div className="input-group">
-                                        <input 
-                                        id="videoLink" 
-                                        name="videoLink" 
-                                        type="text" 
-                                        onChange={(e) => handleChange(e)}
-                                        placeholder="Introductory Video Link" 
-                                        required />
+                                        <input
+                                            id="videoLink"
+                                            name="videoLink"
+                                            value={presale.videoLink}
+                                            type="text"
+                                            onChange={(e) => handleChange(e)}
+                                            placeholder="Introductory Video Link"
+                                            required />
                                     </div>
                                     <p className="desc">Add your social links</p>
                                     <div className="input-group">
-                                        <input name="youtube" 
-                                        type="text" 
-                                        placeholder="YouTube" 
-                                        onChange={(e) => handleChange(e)}
-                                        required />
-                                        <input 
-                                        name="twitter" 
-                                        type="text" 
-                                        onChange={(e) => handleChange(e)}
-                                        placeholder="Twitter" required />
+                                        <input name="youtube"
+                                            type="text"
+                                            placeholder="YouTube"
+                                            value={presale.youtube}
+                                            onChange={(e) => handleChange(e)}
+                                            required />
+                                        <input
+                                            name="twitter"
+                                            value={presale.twitter}
+                                            type="text"
+                                            onChange={(e) => handleChange(e)}
+                                            placeholder="Twitter" required />
                                     </div>
                                     <div className="input-group">
                                         <input
-                                            name="telegram" 
-                                            type="text" 
+                                            name="telegram"
+                                            type="text"
+                                            value={presale.telegram}
                                             onChange={(e) => handleChange(e)}
                                             placeholder="Telegram" required />
-                                        <input 
-                                        name="discord"
+                                        <input
+                                            name="discord"
+                                            value={presale.discord}
                                             onChange={(e) => handleChange(e)}
                                             type="text" placeholder="Discord"
                                             required />
@@ -317,11 +302,13 @@ const Create = () => {
                                     <div className="input-group">
                                         <input
                                             name="github"
+                                            value={presale.github}
                                             type="text"
                                             onChange={(e) => handleChange(e)}
                                             placeholder="Github" required />
                                         <input
                                             name="instagram"
+                                            value={presale.instagram}
                                             type="text"
                                             onChange={(e) => handleChange(e)}
                                             placeholder="Instagram" required />
@@ -329,11 +316,13 @@ const Create = () => {
                                     <div className="input-group">
                                         <input
                                             name="linkedin"
+                                            value={presale.linkedin}
                                             onChange={(e) => handleChange(e)}
                                             type="text"
                                             placeholder="LinkedIn" required />
                                         <input
                                             name="reddit"
+                                            value={presale.reddit}
                                             type="text"
                                             onChange={(e) => handleChange(e)}
                                             placeholder="Reddit"
