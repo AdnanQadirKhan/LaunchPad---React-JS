@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/header/Header-1";
-import dataHotCollection2 from "../assets/fake-data/dataHotCollection2";
-import TopSeller from "../components/layouts/creacte-item/TopSeller";
-import RequestKYC from "../components/layouts/creacte-item/RequestKycForm";
-import { Newsletters } from "../components/layouts/home/Newsletters";
-import Footer from "../components/footer/FooterStyle2";
+import Header from "../../components/header/Header-1";
+// import dataHotCollection2 from "../assets/fake-data/dataHotCollection2";
+// import TopSeller from "../components/layouts/creacte-item/TopSeller";
+import EditLock from "../../components/layouts/edit-item/EditLockForm";
+import { Newsletters } from "../../components/layouts/home/Newsletters";
+import Footer from "../../components/footer/FooterStyle2";
+
+
 
 const CreateItem = () => {
+  
   return (
     <div>
       <Header />
@@ -18,14 +21,14 @@ const CreateItem = () => {
             <div className="col-md-12">
               <div className="page-title-inner flex">
                 <div className="page-title-heading">
-                  <h2 className="heading">Admin Dashboard</h2>
+                  <h2 className="heading">Liquidity Lockup</h2>
                 </div>
                 <div className="breadcrumbs">
                   <ul>
                     <li>
                       <Link to="/">Home</Link>
                     </li>
-                    <li>Admin</li>
+                    <li>Liquidity Lockup</li>
                   </ul>
                 </div>
               </div>
@@ -34,7 +37,7 @@ const CreateItem = () => {
         </div>
       </section>
       {/* <TopSeller data={dataHotCollection2} /> */}
-      {/* <RequestKYC /> */}
+      <EditLock />
       <Newsletters />
       <Footer />
     </div>

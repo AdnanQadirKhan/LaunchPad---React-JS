@@ -1,18 +1,21 @@
 import React, { useRef, useState, useEffect } from "react";
 import TopBar from "./TopBar";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo/logo_dark.png";
 import logo2x from "../../assets/images/logo/logo_dark@2x.png";
 import logolight from "../../assets/images/logo/logo.png";
 import logolight2x from "../../assets/images/logo/logo@2x.png";
-import menus from "../../pages/menu-1";
+import menus from "../../pages/Admin/menu-1";
 import DarkMode from "./DarkMode";
 import { ethers } from "ethers";
 
 import icon from "../../assets/images/icon/connect-wallet.svg";
+import { useContext } from "react";
+import AdressContext from "../../AddressContext";
 
 const Header = () => {
   const { pathname } = useLocation();
+  const {  address , setAddress} = useContext(AdressContext);
   const headerRef = useRef(null);
   useEffect(() => {
     window.addEventListener("scroll", isSticky);
@@ -33,9 +36,9 @@ const Header = () => {
   const [userBalance, setUserBalance] = useState(null);
   const [ConnButtonText, setConnButtonText] = useState("Connect MetaMask");
   useEffect(() => {
-     checkConnectedWallets();
+    checkConnectedWallets();
 
-  },[]);
+  }, []);
   const connectWallet = async () => {
     if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
       // this means that metamask is installed//
@@ -54,6 +57,8 @@ const Header = () => {
           setDefaultAccount(
             account
           );
+          setAddress(account);
+           console.log(address);
           setBarrer("|");
           setSpacer(" ");
         }
@@ -65,7 +70,7 @@ const Header = () => {
 
   const isSticky = (e) => {
     const header = document.querySelector(".js-header");
-    
+
     const scrollTop = window.scrollY;
 
     scrollTop >= 100
@@ -111,6 +116,12 @@ const Header = () => {
   const handleOnClick = (index) => {
     setActiveIndex(index);
   };
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate('/login');
+
+  };
 
   //   window.ethereum.on("accountsChanged", accountChangedHandler);
 
@@ -131,7 +142,7 @@ const Header = () => {
               <div id="site-header-inner" className="flex">
                 <div id="site-logo" className="clearfix">
                   <div id="site-logo-inner">
-                    <Link to="/" rel="home" className="main-logo">
+                    <Link to="/admin" rel="home" className="main-logo">
                       <img
                         id="logo_header"
                         className="logo-dark"
@@ -149,7 +160,7 @@ const Header = () => {
                     </Link>
                   </div>
                 </div>
-                
+
 
                 <nav id="main-nav" className="main-nav" ref={menuLeft}>
                   <ul id="menu-primary-menu" className="menu">
@@ -157,9 +168,7 @@ const Header = () => {
                       <li
                         key={index}
                         onClick={() => handleOnClick(index)}
-                        className={`menu-item menu-item-has-children ${
-                          activeIndex === index ? "active" : ""
-                        } `}
+                        className={`menu-item menu-item-has-children ${activeIndex === index ? "active" : ""}`}
                       >
                         <Link to="#">{data.name}</Link>
                         <ul className="sub-menu">
@@ -167,12 +176,24 @@ const Header = () => {
                             <li
                               key={index}
                               className={
-                                pathname === submenu.links
-                                  ? "menu-item current-item"
-                                  : "menu-item"
+                                pathname === submenu.links ? "menu-item current-item" : "menu-item"
                               }
                             >
                               <Link to={submenu.links}>{submenu.sub}</Link>
+                              {submenu.submenu && (
+                                <ul className="sub-menu">
+                                  {submenu.submenu.map((subsubmenu, subindex) => (
+                                    <li
+                                      key={subindex}
+                                      className={
+                                        pathname === subsubmenu.links ? "menu-item current-item" : "menu-item"
+                                      }
+                                    >
+                                      <Link to={subsubmenu.links}>{subsubmenu.sub}</Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                             </li>
                           ))}
                         </ul>
@@ -180,8 +201,9 @@ const Header = () => {
                     ))}
                   </ul>
                 </nav>
+                <button onClick={() => handleLogout()} className="btn btn-primary p-3">Logout</button>
                 {/* <div onClick={connectWallet} className="button-connect-wallet"> */}
-                  {/* <button onClick = {connectWalletHandler}>
+                {/* <button onClick = {connectWalletHandler}>
                                     <span>
                                     
                                     </span>
@@ -189,7 +211,7 @@ const Header = () => {
                                     {userBalance}
                                     </p>
                                 </button> */}
-                  {/* <div className="sc-button wallet  style-2">
+                {/* <div className="sc-button wallet  style-2">
                     <img src={icon} alt="icon" />
                     <span>
                       {defaultAccount.length > 0

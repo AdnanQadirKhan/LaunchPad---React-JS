@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Header from '../components/header/Header-1';
-import dataHotCollection2 from '../assets/fake-data/dataHotCollection2';
-import TopSeller from '../components/layouts/creacte-item/TopSeller';
-import Edit from '../components/layouts/edit-item/Edit';
-import { Newsletters } from '../components/layouts/home/Newsletters';
-import Footer from '../components/footer/FooterStyle2';
+import Header from '../../components/header/Header-1';
+import dataHotCollection2 from '../../assets/fake-data/dataHotCollection2';
+import TopSeller from '../../components/layouts/creacte-item/TopSeller';
+import Edit from '../../components/layouts/edit-item/Edit';
+import { Newsletters } from '../../components/layouts/home/Newsletters';
+import Footer from '../../components/footer/FooterStyle2';
 
 const CreateItem = () => {
 return <div>

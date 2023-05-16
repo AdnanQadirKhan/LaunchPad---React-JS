@@ -3,7 +3,10 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom'
 import routes from './pages/router'
 import { SnackbarProvider } from "notistack";
+import AdressContext from "./AddressContext";
+import { useState } from "react";
 function App() {
+    const [ address , setAddress ] = useState("");
     return (
         <>
             <SnackbarProvider
@@ -11,7 +14,9 @@ function App() {
                     vertical: 'bottom',
                     horizontal: 'right',
                 }}
-            ></SnackbarProvider>
+            >
+                <AdressContext.Provider value={{ address , setAddress}}>
+
             <Routes >
                 {
                     routes.map((data, index) => (
@@ -19,6 +24,9 @@ function App() {
                     ))
                 }
             </Routes>
+            </AdressContext.Provider>
+
+            </SnackbarProvider>
         </>
     );
 }

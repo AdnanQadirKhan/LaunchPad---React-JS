@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/header/Header-1";
-import LatestCollection from "../components/layouts/explore/LatestCollection";
-import dataCollections from "../assets/fake-data/dataCollections";
-import PopularCollection from "../components/layouts/explore/PopularCollection";
-import dataPopularCollection from "../assets/fake-data/dataPopularCollection";
-import { Newsletters } from "../components/layouts/home/Newsletters";
-import Footer from "../components/footer/FooterStyle2";
-import http from "../Services/httpService";
+import Header from "../../components/header/Header-1";
+import LatestCollection from "../../components/layouts/explore/LatestCollection";
+import dataCollections from "../../assets/fake-data/dataCollections";
+import PopularCollection from "../../components/layouts/explore/PopularCollectionAdmin";
+import dataPopularCollection from "../../assets/fake-data/dataPopularCollection";
+import { Newsletters } from "../../components/layouts/home/Newsletters";
+import Footer from "../../components/footer/FooterStyle2";
+import http from "../../Services/httpService";
 
 const ExploreAll = () => {
   const [list, setList] = useState([]);

@@ -7,9 +7,9 @@ axios.interceptors.response.use(null, (error) => {
     error.response.status >= 400 &&
     error.response.status < 500;
 
-  if (!expectedError) {
-    enqueueSnackbar("An un expected error occured.", { variant: "error" });
-  }
+  // if (!expectedError) {
+  //   enqueueSnackbar("An un expected error occured.", { variant: "error" });
+  // }
 
   return Promise.reject(error);
 });

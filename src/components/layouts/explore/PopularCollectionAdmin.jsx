@@ -148,14 +148,14 @@ const PopularCollection = (props) => {
                 </div>
                 {link === "edit-presale" ? (
                   <div className="product-img">
-                    <Link to={`/edit-presale/${item._id}`} className="sc-button style letter">
+                    <Link to={`/admin/edit-presale/${item._id}`} className="sc-button style letter">
                       <span>Edit Presale</span>
                     </Link>
                   </div>
                 ) : (
                   <div className="product-img">
                     {/* <img src={item.img} alt="Bidzen" /> */}
-                    <Link to={`/presale/${item._id}`} className="sc-button style letter">
+                    <Link to={`/admin/view/presale/${item._id}`} className="sc-button style letter">
                       <span>View presale</span>
                     </Link>
                   </div>

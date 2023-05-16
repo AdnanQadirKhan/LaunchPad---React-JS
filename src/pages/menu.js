@@ -1,5 +1,5 @@
 const menus = [
-  
+
     {
         id: 2,
         name: 'Presales',
@@ -7,7 +7,7 @@ const menus = [
             {
                 id: 1,
                 sub: 'Create presale',
-                
+
                 links: '/create-presale'
             },
             {
@@ -16,8 +16,8 @@ const menus = [
                 // links: '/explore-02'
                 links: '/explore-01'
             },
-        
-            
+
+
         ],
     },
     {
@@ -29,7 +29,7 @@ const menus = [
                 sub: 'Create airdrop',
                 links: '/create-airdrop'
             },
-            
+
         ],
     },
     {
@@ -44,10 +44,21 @@ const menus = [
             {
                 id: 2,
                 sub: 'View locks',
-                links: '/view-locks'
-            },
-            
-        ],
+                // links: '/view-locks',
+                submenu: [
+                    {
+                        id: 3,
+                        sub: 'Presale Locks',
+                        links: '/view-locks/presale'
+                    },
+                    {
+                        id: 4,
+                        sub: 'Custom Locks',
+                        links: '/view-locks/custom'
+                    }
+                ]
+            }
+        ]
     },
     {
         id: 5,
@@ -98,7 +109,7 @@ const menus = [
             },
         ],
     },
-    
+
 ]
 
 export default menus;

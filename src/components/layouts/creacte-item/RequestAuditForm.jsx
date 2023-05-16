@@ -1,13 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import img from "../../../assets/images/background/img-create-item.jpg";
 import { enqueueSnackbar } from "notistack";
 import http from "./../../../Services/httpService";
+import AddressContext from '../../../AddressContext';
+import { useContext } from 'react';
+
 const Create = () => {
+  const {  address , setAddress} = useContext(AddressContext);
+
   const [audit, setAudit] = useState({
     name: null,
     email: null,
     presaleLink: null,
   });
+  useEffect(() => {
+    http.get("presale/my/admin").then(res => {
+      console.log(res.data);
+      setPresaleList(res.data || [])
+    })
+  }, []);
+  const [presaleList, setPresaleList] = useState([]);
+
+  useEffect(() => {
+    http.get("presale/my/admin").then(res => {
+      console.log(res.data);
+      setPresaleList(res.data || [])
+    })
+  }, []);
   const handleAdd = () => {
     const { name, email, presaleLink, auditReportLink } = audit;
     if (
@@ -23,7 +42,7 @@ const Create = () => {
       enqueueSnackbar("All fields are required", { variant: "info" });
       return;
     }
-    http.post("audit", audit).then((res) => {
+    http.post("audit", { walletAddress: address[0] , ...audit}).then((res) => {
         console.log(res);
         setAudit({
           name: "",
@@ -36,8 +55,8 @@ const Create = () => {
       })
       .catch((error) => {
         console.log(error);
-        enqueueSnackbar("Error adding Audit: " + error.message, {
-          variant: "error",
+        enqueueSnackbar(error.response.data, {
+          variant: "info",
         });
         return;
       });
@@ -60,7 +79,7 @@ const Create = () => {
                   <h3>Audit Request</h3>
                   <p className="desc">Request AUDIT badge for your presale</p>
                 </div>
-                <form id="create-item-1" action="#" acceptCharset="utf-8">
+                <div id="create-item-1">
                   {/* <label className="uploadFile">
                                     <span className="filename">Upload PDF</span>
                                     <input type="file" className="inputfile form-control" name="file" />
@@ -89,21 +108,23 @@ const Create = () => {
                       required
                     />
                   </div>
-                  <div className="input-group">
-                    <input
-                      name="presaleLink"
-                      value={audit.presaleLink}
+                  <div className="input-group style-2">
+                  <select
                       onChange={(e) => handleChange(e)}
-                      type="text"
-                      placeholder="Presale Link"
-                      required
-                    />
+                      name="presaleLink"
+                      id="presaleLink"
+                      required>
+                      {presaleList.length !== 0 && presaleList.map((item, index) => (
+                        <option key={index} value={item._id}>{item.projectName}</option>
+                      ))}
+
+                    </select>
                     {/* <input name="number" type="text" placeholder="Rate (1 BNB = ??? tokens)"
                                         required /> */}
                   </div>
                   <div className="input-group">
                     <p className="desc">
-                      Wallet Address: 0xc2e495454979561494651949654
+                      Wallet Address: {address[0]}
                     </p>
                     {/* <input name="name" type="text" placeholder="Wallet Address" required /> */}
                     {/* <input name="number" type="text" placeholder="Hardcap" required /> */}
@@ -126,7 +147,7 @@ const Create = () => {
                   </div>
                   {/* <textarea id="comment-message" name="message" tabIndex="4"
                                     placeholder="Wallet Address List" aria-required="true"></textarea> */}
-                  <div className="input-group style-2 ">
+                  <div className="input-group style-2">
                     <div className="btn-check">
                       <input type="radio" id="sale" name="fav_language" />
                       <label htmlFor="sale">
@@ -152,7 +173,7 @@ const Create = () => {
                   >
                     <span>Submit Audit Request</span>{" "}
                   </button>
-                </form>
+                </div>
               </div>
               {/* <div className="form-background">
                             <img src={img} alt="Bidzen" />

@@ -8,11 +8,13 @@ import logolight2x from "../../assets/images/logo/logo@2x.png";
 import menus from "../../pages/menu";
 import DarkMode from "./DarkMode";
 import { ethers } from "ethers";
-
+import AddressContext from "../../AddressContext";
 import icon from "../../assets/images/icon/connect-wallet.svg";
+import { useContext } from "react";
 
 const Header = () => {
   const { pathname } = useLocation();
+  const { address, setAddress } = useContext(AddressContext);
   const headerRef = useRef(null);
   useEffect(() => {
     window.addEventListener("scroll", isSticky);
@@ -29,13 +31,16 @@ const Header = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState("Connect MetaMask");
+
+  console.log("Context", address);
   console.log(defaultAccount)
+
   const [userBalance, setUserBalance] = useState(null);
   const [ConnButtonText, setConnButtonText] = useState("Connect MetaMask");
   useEffect(() => {
-     checkConnectedWallets();
+    checkConnectedWallets();
 
-  },[]);
+  }, []);
   const connectWallet = async () => {
     if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
       // this means that metamask is installed//
@@ -54,6 +59,7 @@ const Header = () => {
           setDefaultAccount(
             account
           );
+          setAddress(account);
           setBarrer("|");
           setSpacer(" ");
         }
@@ -98,6 +104,7 @@ const Header = () => {
 
   const accountChangedHandler = (newAccount) => {
     setDefaultAccount(newAccount);
+    setAddress(newAccount);
     getUserBalance(newAccount.toString());
   };
   const getUserBalance = (address) => {
@@ -148,16 +155,14 @@ const Header = () => {
                     </Link>
                   </div>
                 </div>
-               
+
                 <nav id="main-nav" className="main-nav" ref={menuLeft}>
                   <ul id="menu-primary-menu" className="menu">
                     {menus.map((data, index) => (
                       <li
                         key={index}
                         onClick={() => handleOnClick(index)}
-                        className={`menu-item menu-item-has-children ${
-                          activeIndex === index ? "active" : ""
-                        } `}
+                        className={`menu-item menu-item-has-children ${activeIndex === index ? "active" : ""}`}
                       >
                         <Link to="#">{data.name}</Link>
                         <ul className="sub-menu">
@@ -165,12 +170,24 @@ const Header = () => {
                             <li
                               key={index}
                               className={
-                                pathname === submenu.links
-                                  ? "menu-item current-item"
-                                  : "menu-item"
+                                pathname === submenu.links ? "menu-item current-item" : "menu-item"
                               }
                             >
                               <Link to={submenu.links}>{submenu.sub}</Link>
+                              {submenu.submenu && (
+                                <ul className="sub-menu">
+                                  {submenu.submenu.map((subsubmenu, subindex) => (
+                                    <li
+                                      key={subindex}
+                                      className={
+                                        pathname === subsubmenu.links ? "menu-item current-item" : "menu-item"
+                                      }
+                                    >
+                                      <Link to={subsubmenu.links}>{subsubmenu.sub}</Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                             </li>
                           ))}
                         </ul>
@@ -178,8 +195,9 @@ const Header = () => {
                     ))}
                   </ul>
                 </nav>
+
                 <div onClick={connectWallet} className="button-connect-wallet">
-                 
+
                   <div className="sc-button wallet  style-2">
                     <img src={icon} alt="icon" />
                     <span>
@@ -188,7 +206,7 @@ const Header = () => {
                         : "Connect MetaMask"
                       }
                     </span>
-                
+
                   </div>
                 </div>
 

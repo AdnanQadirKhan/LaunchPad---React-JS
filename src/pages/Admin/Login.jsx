@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/header/Header';
+import Header from '../../components/header/Header';
 // import  Newsletters from '../components/layouts/Newsletters';
-import { Newsletters } from '../components/layouts/home/Newsletters';
-import Footer from '../components/footer/FooterStyle2';
-import http from '../Services/httpService';
+import { Newsletters } from '../../components/layouts/home/Newsletters';
+import Footer from '../../components/footer/FooterStyle2';
+import http from '../../Services/httpService';
 import { enqueueSnackbar } from "notistack";
-import img1 from '../assets/images/background/img-login.jpg';
+// import img1 from '../assets/images/background/img-login.jpg';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -17,6 +17,10 @@ const Login = () => {
         password: null,
     });
     const navigate = useNavigate();
+    useEffect(()=>{
+        const token = localStorage.getItem('token');
+        if(token) return navigate('/admin');
+    },[])
 
     const handleAdd = async () => {
 
@@ -32,6 +36,7 @@ const Login = () => {
         }
         try {
             const res = await http.post("auth", login);
+            localStorage.setItem('token', res.data);
             console.log(res);
             setLogin({
                 email: "",
@@ -41,7 +46,7 @@ const Login = () => {
             navigate('/admin');
         } catch (error) {
             console.log(error);
-            enqueueSnackbar("Error while Login: " + error.message, {
+            enqueueSnackbar(error.response.data, {
                 variant: "error",
             });
         }

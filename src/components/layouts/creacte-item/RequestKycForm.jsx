@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import img from "../../../assets/images/background/img-create-item.jpg";
 import { enqueueSnackbar } from "notistack";
 import http from "./../../../Services/httpService";
+import AddressContext from '../../../AddressContext';
+import { useContext } from 'react';
 const Create = () => {
   const [kyc, setKyc] = useState({
     name: null,
     email: null,
     presaleLink: null,
   });
+  const [presaleList, setPresaleList] = useState([]);
+  const {  address , setAddress} = useContext(AddressContext);
+  useEffect(() => {
+    http.get("presale/my/admin").then(res => {
+      console.log(res.data);
+      setPresaleList(res.data || [])
+    })
+  }, []);
   const handleAdd = () => {
     const { name, email, presaleLink } = kyc;
     if (
@@ -21,20 +31,20 @@ const Create = () => {
       enqueueSnackbar("All fields are required", { variant: "info" });
       return;
     }
-    http.post("kyc", kyc).then((res) => {
-        console.log(res);
-        setKyc({
-          name: "",
-          email: "",
-          presaleLink: "",
-        });
-        enqueueSnackbar("Successfully added", { variant: "success" });
-        return;
-      })
+    http.post("kyc", { walletAddress: address[0], ...kyc}).then((res) => {
+      console.log(res);
+      setKyc({
+        name: "",
+        email: "",
+        presaleLink: "",
+      });
+      enqueueSnackbar("Successfully Added", { variant: "success" });
+      return;
+    })
       .catch((error) => {
         console.log(error);
-        enqueueSnackbar("Error adding KYC: " + error.message, {
-          variant: "error",
+        enqueueSnackbar(error.response.data, {
+          variant: "info",
         });
         return;
       });
@@ -59,9 +69,9 @@ const Create = () => {
                 </div>
                 <div
                   id="create-item-1"
-                  // action="#"
-                  // method="GET"
-                  // acceptCharset="utf-8"
+                // action="#"
+                // method="GET"
+                // acceptCharset="utf-8"
                 >
                   {/* <label className="uploadFile">
                                     <span className="filename">Upload PDF</span>
@@ -91,21 +101,23 @@ const Create = () => {
                       required
                     />
                   </div>
-                  <div className="input-group">
-                    <input
-                      name="presaleLink"
-                      type="text"
-                      value={kyc.presaleLink}
+                  <div className="input-group pr-4">
+                    <select
                       onChange={(e) => handleChange(e)}
-                      placeholder="Presale Link"
-                      required
-                    />
+                      name="presaleLink"
+                      id="presaleLink"
+                      required>
+                      {presaleList.length !== 0 && presaleList.map((item, index) => (
+                        <option key={index} value={item._id}>{item.projectName}</option>
+                      ))}
+
+                    </select>
                     {/* <input name="number" type="text" placeholder="Rate (1 BNB = ??? tokens)"
                                         required /> */}
                   </div>
                   <div className="input-group">
                     <p className="desc">
-                      Wallet Address: 0xc2e495454979561494651949654
+                      Wallet Address: {address[0]}
                     </p>
                     {/* <input name="name" type="text" placeholder="Wallet Address" required /> */}
                     {/* <input name="number" type="text" placeholder="Hardcap" required /> */}

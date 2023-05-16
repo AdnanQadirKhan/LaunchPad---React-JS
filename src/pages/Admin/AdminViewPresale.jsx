@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Header from "../components/header/Header-1";
-import dataHotCollection2 from "../assets/fake-data/dataHotCollection2";
-import TopSeller from "../components/layouts/creacte-item/TopSeller";
-import { Newsletters } from "../components/layouts/home/Newsletters";
-import Footer from "../components/footer/FooterStyle2";
-import ViewPresale from "../components/layouts/explore/ViewPresaleForm";
-import http from "../Services/httpService";
+import Header from "../../components/header/Header-1";
+import dataHotCollection2 from "../../assets/fake-data/dataHotCollection2";
+import TopSeller from "../../components/layouts/creacte-item/TopSeller";
+import { Newsletters } from "../../components/layouts/home/Newsletters";
+import Footer from "../../components/footer/FooterStyle2";
+import ViewPresale from "../../components/layouts/explore/AdminViewPresaleForm";
+import http from "../../Services/httpService";
 
 const CreateItem = () => {
   const [list, setList] = useState([]);

@@ -14,7 +14,7 @@ const ViewLock = (props) => {
     <section className="tf-section trendy-colection-page style-2">
       <div className="container">
         <div className="row">
-          
+
           {data.slice(0, visible).map((item, index) => (
             <div key={item.id} className="fl-item col-xl-3 col-lg-4 col-md-6">
               <div className="sc-product-item style-5">
@@ -40,7 +40,7 @@ const ViewLock = (props) => {
                       {" "}
                       Token Amount{" "}
                       <p style={{ fontWeight: "normal" }}>
-                        {item.tokenAmount} 
+                        {item.tokenAmount}
                       </p>
                     </h5>
                   </div>
@@ -60,15 +60,15 @@ const ViewLock = (props) => {
                   </div>
 
                 </div>
-                {/* <div className="product-img">
+                <div className="product-img">
                   <Link
-                    to={'#'}
+                    to={`/admin/edit/lock/${item._id}`}
                     className="sc-button style letter"
                   >
-                    <span>View Lock</span>
+                    <span>Withdraw</span>
                   </Link>
-                 
-                </div> */}
+
+                </div>
               </div>
             </div>
           ))}
