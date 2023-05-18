@@ -11,22 +11,18 @@ const Create = () => {
   const [audit, setAudit] = useState({
     name: null,
     email: null,
+    auditReportLink: null,
     presaleLink: null,
   });
-  useEffect(() => {
-    http.get("presale/my/admin").then(res => {
-      console.log(res.data);
-      setPresaleList(res.data || [])
-    })
-  }, []);
   const [presaleList, setPresaleList] = useState([]);
-
   useEffect(() => {
-    http.get("presale/my/admin").then(res => {
+    http.get(`presale/my/${address[0]}`).then(res => {
       console.log(res.data);
       setPresaleList(res.data || [])
     })
   }, []);
+
+  
   const handleAdd = () => {
     const { name, email, presaleLink, auditReportLink } = audit;
     if (
@@ -50,7 +46,7 @@ const Create = () => {
           presaleLink: "",
           auditReportLink: ""
         });
-        enqueueSnackbar("Successfully added", { variant: "success" });
+        enqueueSnackbar("Successfully Added", { variant: "success" });
         return;
       })
       .catch((error) => {

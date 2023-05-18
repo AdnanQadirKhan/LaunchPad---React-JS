@@ -12,6 +12,8 @@ import ViewAudit from './Admin/ViewAudit';
 import Home01 from "./Home01";
 import Home02 from "./Home02";
 import Explore01 from './Explore01';
+import ExploreInvestment from './ExploreInvestment';
+import ExploreMyInvestment from './ExploreMyInvestment';
 import Explore02 from './Explore02';
 import ViewLock from './ViewLock';
 import Creator from './Creator';
@@ -38,6 +40,8 @@ const routes = [
     { path: '/', component: <Home01 /> },
     { path: '/home-02', component: <Home02 /> },
     { path: '/explore-01', component: <Explore01 /> },
+    { path: '/explore-investments', component: <ExploreInvestment /> },
+    { path: '/my/presales', component: <ExploreMyInvestment /> },
     { path: '/explore-02', component: <Explore02 /> },
     { path: '/view-locks/presale', component: <ViewLock /> },
     { path: '/view-locks/custom', component: <ViewLock /> },

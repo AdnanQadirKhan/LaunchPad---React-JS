@@ -8,12 +8,16 @@ import dataPopularCollection from "../assets/fake-data/dataPopularCollection";
 import { Newsletters } from "../components/layouts/home/Newsletters";
 import Footer from "../components/footer/FooterStyle2";
 import http from "../Services/httpService";
+import AddressContext from '../AddressContext';
+import { useContext } from 'react';
 
 const ViewAlert = () => {
+    const { address, setAddress } = useContext(AddressContext);
     const [list, setList] = useState([]);
     console.log(list);
     useEffect(() => {
-        http.get(`alert/123afade341`).then((res) => { setList(res.data); console.log(res.data) });
+        http.get(`alert/${address[0]}`).then((res) => 
+        { setList(res.data); console.log(res.data) });
 
     }, []);
     console.log(list);

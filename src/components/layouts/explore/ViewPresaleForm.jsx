@@ -1,31 +1,109 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img from "../../../assets/images/background/img-create-item.jpg";
 import { enqueueSnackbar } from "notistack";
 import http from "../../../Services/httpService";
+import { useParams } from 'react-router-dom';
 import AddressContext from '../../../AddressContext';
 import { useContext } from 'react';
 
 
 const Create = (props) => {
-  const {  address , setAddress} = useContext(AddressContext);
+  const { address, setAddress } = useContext(AddressContext);
+  const { id } = useParams();
+  const [kyc, setKyc] = useState([]);
+  const [audit, setAudit] = useState([]);
+  console.log(kyc);
+  useEffect(() => {
+    http.get(`/presale/wallet/${address[0]}`)
+      .then((res) => {
+        setKyc(res.data.kyc)
+        setAudit(res.data.audit)
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle error responses
+      });
+  }, [address]);
+
   const data = props.data;
-  console.log(data);
+  // console.log(data);
   const handleAlertClick = (data) => {
     const obj = {
       userId: address[0],
       presaleId: data._id,
     };
-    http
-      .post("alert", obj)
-      .then((res) => {
-        console.log(res);
-        return enqueueSnackbar(res.data, { variant: "success" });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(obj);
+    http.post("alert", obj).then((res) => {
+      // console.log(res);
+      return enqueueSnackbar(res.data, { variant: "success" });
+    }).catch((err) => {
+      console.log(err);
+    });
+    console.log('obj', obj);
     return false;
+  };
+  const [bnb, setBNB] = useState({
+    crypto: null,
+  });
+  const handleAdd = () => {
+    const { crypto } = bnb;
+    const cryptoValue = parseFloat(crypto);
+    if (crypto === null || crypto === "") {
+      enqueueSnackbar("Enter BNB First", { variant: "info" });
+      return;
+    } else if (crypto != "" && address[0] === "Connect MetaMask") {
+      enqueueSnackbar("Connect Meta Mask", { variant: "info" });
+      return;
+    }
+    else if (isNaN(cryptoValue)) {
+      enqueueSnackbar("Enter a valid amount for BNB", { variant: "info" });
+      return;
+    }
+    else if(cryptoValue < data.minimum ){
+      enqueueSnackbar("Enter an amount greater than minimum BNB", { variant: "info" });
+      return;
+    } 
+    else if(cryptoValue > data.maximum ){
+      enqueueSnackbar("Enter an amount less than maximum BNB", { variant: "info" });
+      return;
+    } 
+
+    const requestBody = {
+      presaleId: id, // Assuming id is the presale ID
+      walletAddress: props.data.walletAddress, // Pass the form data
+      bnb: crypto, // Pass the BNB data
+    };
+
+    http
+      .post(`/investment/bnb/${id}`, requestBody)
+      .then((res) => {
+        console.log(res.data);
+        enqueueSnackbar("Successfully added", { variant: "success" });
+        setBNB({
+          crypto: null,
+        });
+      })
+      .catch((error) => {
+        // console.log(error);
+        enqueueSnackbar(error.response.data, {
+          variant: "info",
+      });
+      return;
+      });
+
+    return false;
+  };
+  const currentDate = new Date(); // Get the current date and time
+  const startTime = data.startTime; // Get the current date and time
+  
+  // Check if the start date and time is not equal to the current date and time
+  const isUpcoming = startTime <= currentDate;
+  console.log(isUpcoming);
+
+  const handleChange = (e) => {
+    setBNB({
+      ...bnb,
+      [e.target.name]: e.target.value,
+    });
   };
   return (
     <section className="tf-section create-item pd-top-0 mg-t-40">
@@ -36,12 +114,27 @@ const Create = (props) => {
         >
           <div className="d-flex p-4">
             <h3>{data.projectName}</h3>
-            <span className="badge badge-primary my-auto ml-4 mr-2">Audit</span>
-            <span className="badge badge-danger my-auto mx-2">KYC</span>
-            <span className="badge badge-success my-auto mx-2">Upcoming</span>
+            {kyc.map((item) => (
+              item.walletAddress === address[0] && item.presaleLink === data._id && item.status === "active" && (
+                <span className="badge badge-danger my-auto mx-2">KYC</span>
+              )
+
+            ))}
+            {audit.map((item) => (
+              item.walletAddress === address[0] && item.presaleLink === data._id && item.status === "active" && (
+                <span className="badge badge-primary my-auto ml-4 mr-2">Audit</span>
+
+              )
+
+            ))}
+            {isUpcoming ? (
+              <span className="badge badge-priamry my-auto mx-2">Upcoming</span>
+            ) : (
+              <span className="badge badge-success my-auto mx-2">Live</span>
+            )}
             <span className="my-auto mx-2">
-              <button className="" onClick={() => handleAlertClick(data)}>
-                <i class="fa-solid fa-bell"></i>
+              <button className="" style={{ padding: "4px" }} onClick={() => handleAlertClick(data)}>
+                <i className="fa-solid fa-bell"></i>
               </button>
             </span>
           </div>
@@ -238,13 +331,24 @@ const Create = (props) => {
                 }}
               ></div>
             </div>
-            <div className="d-flex justify-content-between p-4">
-              <span className="text-info text-start">{data.minimum} BNB</span>
-              <span className="text-info text-end">{data.maximum} BNB</span>
+            <div id="addBNB">
+              <div className="d-flex justify-content-between p-4">
+                <span className="text-info text-start">{data.minimum} BNB</span>
+                <span className="text-info text-end">{data.maximum} BNB</span>
+              </div>
+              <label className="p-4">Amount</label>
+              <input
+                type="text"
+                value={bnb.crypto || ""}
+                onChange={(e) => handleChange(e)}
+                name="crypto"
+                id="crypto"
+                placeholder="0.0" />
+              {(
+                address[0] != "" &&
+                <button className="btn btn-light my-4" onClick={handleAdd}>Add Crypto</button>
+              )}
             </div>
-            <label className="p-4">Amount</label>
-            <input type="text" name="" id="" placeholder="0.0" />
-            <button className="btn btn-light my-4">Connect Wallet</button>
           </div>
           <div
             className="container p-4 my-4"

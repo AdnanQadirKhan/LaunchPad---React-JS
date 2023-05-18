@@ -4,16 +4,17 @@ import { enqueueSnackbar } from "notistack";
 import http from "./../../../Services/httpService";
 import AddressContext from '../../../AddressContext';
 import { useContext } from 'react';
+
 const Create = () => {
+  const {  address , setAddress} = useContext(AddressContext);
   const [kyc, setKyc] = useState({
     name: null,
     email: null,
     presaleLink: null,
   });
   const [presaleList, setPresaleList] = useState([]);
-  const {  address , setAddress} = useContext(AddressContext);
   useEffect(() => {
-    http.get("presale/my/admin").then(res => {
+    http.get(`presale/my/${address[0]}`).then(res => {
       console.log(res.data);
       setPresaleList(res.data || [])
     })
@@ -31,7 +32,7 @@ const Create = () => {
       enqueueSnackbar("All fields are required", { variant: "info" });
       return;
     }
-    http.post("kyc", { walletAddress: address[0], ...kyc}).then((res) => {
+    http.post("kyc", { walletAddress: address[0] , ...kyc }).then((res) => {
       console.log(res);
       setKyc({
         name: "",

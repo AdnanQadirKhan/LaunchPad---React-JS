@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import img from "../../../assets/images/background/img-create-item.jpg";
 import { enqueueSnackbar } from "notistack";
 import http from "../../../Services/httpService";
+import AddressContext from '../../../AddressContext';
+import { useContext } from 'react';
 
 const Create = (props) => {
+  const { address, setAddress } = useContext(AddressContext);
   const data = props.data;
   console.log(data);
   const handleAlertClick = (data) => {
     const obj = {
-      userId: `123afade341`,
+      userId: address[0],
       presaleId: data._id,
     };
     http
