@@ -5,7 +5,7 @@ import { Dropdown } from "react-bootstrap";
 
 const PopularCollection = (props) => {
   const data = props.data;
-  console.log('asddas', data);
+  console.log('My Presales', data);
 
   const [visible, setVisible] = useState(12);
   const showMoreItems = () => {
@@ -106,9 +106,13 @@ const PopularCollection = (props) => {
                 <div className="product-content">
                   <div className="product-author flex">
                     <div className="avatar">
-                      <img src={item.logo} alt="Bidzen" />
+                      <img src={item.logo} alt="Launchpad" />
                     </div>
                   </div>
+                  <h4 className="title">
+                    <Link to="/item-details">{item.title}</Link>{" "}
+                    <h5>{item.projectName}</h5>{" "}
+                  </h4>
                   <h4 className="title">
                     <Link to="/item-details">{item.title}</Link>{" "}
                     <p>1 BNB = {item.rate}</p>{" "}

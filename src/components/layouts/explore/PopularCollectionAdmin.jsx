@@ -104,9 +104,13 @@ const PopularCollection = (props) => {
                 <div className="product-content">
                   <div className="product-author flex">
                     <div className="avatar">
-                      <img src={item.logo} alt="Bidzen" />
+                      <img src={item.logo} alt="Launchpad" />
                     </div>
                   </div>
+                  <h4 className="title">
+                    <Link to="/item-details">{item.title}</Link>{" "}
+                    <h5>{item.projectName}</h5>{" "}
+                  </h4>
                   <h4 className="title">
                     <Link to="/item-details">{item.title}</Link>{" "}
                     <p>1 BNB = {item.rate}</p>{" "}

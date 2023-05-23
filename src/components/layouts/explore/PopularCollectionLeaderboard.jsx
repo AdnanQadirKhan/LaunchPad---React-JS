@@ -1,23 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
+import http from "../../../Services/httpService";
 
 const PopularCollection = (props) => {
-  const data = props.data;
-  console.log('asddas', data);
-
   const [visible, setVisible] = useState(12);
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 4);
   };
-  // const [presaleStatus, setPresaleSatus] = userState('Upcoming')
+  const [data, setData] = useState(props.data);
   const location = useLocation();
   const link = location.pathname.split("/").pop();
+  const handleChange = (e) => {
+    const selectedMonth = e.target.value;
+    // Use the selected month value as needed
+    console.log("Selected month:", selectedMonth);
+
+    if (selectedMonth === "0") {
+      // Set data to props.data
+      setData(props.data);
+    } else {
+      // Fetch data based on the selected month
+      http.get(`presale/leaderboard/${selectedMonth}`)
+        .then((res) => setData(res.data))
+        .catch((error) => {
+          // Handle error if API call fails
+          console.log(error);
+        });
+    }
+  };
+
+  useEffect(() => {
+    setData(props.data);
+  }, [props.data]);
+
 
   return (
     <section className="tf-section trendy-colection-page style-2">
       <div className="container">
+        <div>
+          <label className="form-label" htmlFor="">Sort by month:</label>
+          <select className="form-control mb-4 mt-2" onChange={(e) => handleChange(e)} style={{ fontSize: '13px' }} name="months" id="months" defaultValue={0}>
+            <option value="0">Select Month</option>
+            <option value="1" >January</option>
+            <option value="2" >February</option>
+            <option value="3" >March</option>
+            <option value="4" >April</option>
+            <option value="5" >May</option>
+            <option value="6" >June</option>
+            <option value="7" >July</option>
+            <option value="8" >August</option>
+            <option value="9" >September</option>
+            <option value="10">October</option>
+            <option value="11" >November</option>
+            <option value="12" >December</option>
+          </select>
+        </div>
         <div className="row">
+
           {/* <div className="col-md-12">
                     <div className="wg-drop-category seclect-box">
                         <Dropdown>
@@ -108,10 +148,11 @@ const PopularCollection = (props) => {
                       <img src={item.logo} alt="Launchpad" />
                     </div>
                   </div>
-                  <h4 className="title">
+                  <h4 className="title mt-2">
                     <Link to="/item-details">{item.title}</Link>{" "}
                     <h5>{item.projectName}</h5>{" "}
                   </h4>
+              
                   <h4 className="title">
                     <Link to="/item-details">{item.title}</Link>{" "}
                     <p>1 BNB = {item.rate}</p>{" "}

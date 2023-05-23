@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import img from "../../../assets/images/background/img-create-item.jpg";
 import http from "./../../../Services/httpService";
+import { ethers } from 'ethers';
+import moment from 'moment';
+import Abi from "../../../contracts/LockContract.json"
+
 
 import { enqueueSnackbar } from "notistack";
 const Create = () => {
@@ -9,12 +13,69 @@ const Create = () => {
     tokenAmount: null,
     unlockTime: null,
   });
-  const handleAdd = () => {
+  const [Status, setStatus] = useState("");
+
+  function UnlockTimefunc(e){
+    const dateTimeValue = e.target.value;
+    console.log("Selected date and time:", dateTimeValue);
+    // parse the selected date and time string into a moment object using format 'YYYY-MM-DDTHH:mm'
+    const selectedDateTime = moment(dateTimeValue, "YYYY-MM-DDTHH:mm");
+    console.log("Selected date and time as moment object:", selectedDateTime);
+    // convert the moment object to a unix timestamp in seconds
+    const timestamp = selectedDateTime.unix();
+    console.log("Unix timestamp:", timestamp);
+    setLock({
+      ...lock,
+      [e.target.name]: timestamp,
+  });
+}
+  async function GetLockformData() {
+    // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    // setAddress(accounts[0]);
+    if (typeof window.ethereum !== 'undefined') {
+      setStatus("Wait...")
+
+      try {
+        const data = "0x656736684Cf40670f6A7F1cDE2B16b1843b4549a";
+        const providers = new ethers.providers.Web3Provider(window.ethereum);
+        await window.ethereum.enable();
+        const signer = providers.getSigner();
+        const contract = new ethers.Contract(data, Abi, signer);
+
+        const sendTX = await contract.lockTokens(
+          lock.unlockTime,
+          lock.tokenAmount,
+          lock.tokenAddress
+        )
+        // await sendTX.wait()
+        console.log(sendTX)
+        const check = sendTX.toString()
+        console.log(check)
+        setStatus("successfully sent transaction")
+        return true;
+      }
+      catch (error) {
+
+        console.log(error)
+        setStatus("Error")
+        return false;
+      }
+    }
+  }
+
+
+ 
+  const handleAdd = async () => {
     const { tokenAddress, tokenAmount, unlockTime } = lock;
     if (tokenAddress === null || tokenAmount === null || unlockTime === null) {
       enqueueSnackbar("All fields are required", { variant: "info" });
       return;
     }
+    const success = await GetLockformData();
+        if (!success) {
+            enqueueSnackbar("Failed to add data in blockchain", { variant: "info" });
+            return;
+        }
     http.post("lock", lock).then((res) => {
       console.log(res.data);
       enqueueSnackbar("Successfully added", { variant: "success" });
@@ -82,7 +143,7 @@ const Create = () => {
                       name="unlockTime"
                       type="datetime-local"
                       value={lock.unlockTime || ""}
-                      onChange={(e) => handleChange(e)}
+                      onChange={(e) => UnlockTimefunc(e)}
                       placeholder="Lock Until (time)"
                       required
                     />

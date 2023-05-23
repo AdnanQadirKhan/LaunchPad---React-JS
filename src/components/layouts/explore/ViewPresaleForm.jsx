@@ -21,7 +21,10 @@ const Create = (props) => {
       })
       .catch((error) => {
         console.log(error);
-        // Handle error responses
+        enqueueSnackbar(error.response.data, {
+          variant: "info",
+        });
+        return;
       });
   }, [address]);
 
@@ -32,11 +35,15 @@ const Create = (props) => {
       userId: address[0],
       presaleId: data._id,
     };
-    http.post("alert", obj).then((res) => {
+    http.post(`alert/${data._id}`, obj).then((res) => {
       // console.log(res);
       return enqueueSnackbar(res.data, { variant: "success" });
     }).catch((err) => {
       console.log(err);
+      enqueueSnackbar(err.response.data, {
+        variant: "info",
+      });
+      return;
     });
     console.log('obj', obj);
     return false;
@@ -58,14 +65,14 @@ const Create = (props) => {
       enqueueSnackbar("Enter a valid amount for BNB", { variant: "info" });
       return;
     }
-    else if(cryptoValue < data.minimum ){
+    else if (cryptoValue < data.minimum) {
       enqueueSnackbar("Enter an amount greater than minimum BNB", { variant: "info" });
       return;
-    } 
-    else if(cryptoValue > data.maximum ){
+    }
+    else if (cryptoValue > data.maximum) {
       enqueueSnackbar("Enter an amount less than maximum BNB", { variant: "info" });
       return;
-    } 
+    }
 
     const requestBody = {
       presaleId: id, // Assuming id is the presale ID
@@ -86,18 +93,20 @@ const Create = (props) => {
         // console.log(error);
         enqueueSnackbar(error.response.data, {
           variant: "info",
-      });
-      return;
+        });
+        return;
       });
 
     return false;
   };
-  const currentDate = new Date(); // Get the current date and time
-  const startTime = data.startTime; // Get the current date and time
-  
-  // Check if the start date and time is not equal to the current date and time
+  const currentDate = new Date();
+  const startTime = new Date(data.startTime);
+  const endTime = new Date(data.endTime);
+
+  // Check if the start date and time is not equal to or greater than the current date and time
   const isUpcoming = startTime <= currentDate;
-  console.log(isUpcoming);
+  const isEnded = endTime < currentDate;
+  console.log(startTime);
 
   const handleChange = (e) => {
     setBNB({
@@ -127,10 +136,12 @@ const Create = (props) => {
               )
 
             ))}
-            {isUpcoming ? (
-              <span className="badge badge-priamry my-auto mx-2">Upcoming</span>
-            ) : (
+            {isEnded ? (
+              <span className="badge badge-danger my-auto mx-2">Ended</span>
+            ) : isUpcoming ? (
               <span className="badge badge-success my-auto mx-2">Live</span>
+              ) : (
+                <span className="badge badge-primary my-auto mx-2">Upcoming</span>
             )}
             <span className="my-auto mx-2">
               <button className="" style={{ padding: "4px" }} onClick={() => handleAlertClick(data)}>
@@ -148,7 +159,7 @@ const Create = (props) => {
                   <td>
                     <a href="#" target="_blank" rel="noreferrer nofollow">
                       <span className="">
-                        0x21e767C8FE3665894673583A46158627ee5063b6
+                        {data.contractAddress}
                         <div
                           role="button"
                           tabIndex="0"
@@ -179,7 +190,7 @@ const Create = (props) => {
                     </a>
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td>Token Name</td>
                   <td>Oprah CEO</td>
                 </tr>
@@ -190,7 +201,7 @@ const Create = (props) => {
                 <tr>
                   <td>Token Decimals</td>
                   <td>9</td>
-                </tr>
+                </tr> */}
                 <tr>
                   <td>Token Address</td>
                   <td>
@@ -201,7 +212,7 @@ const Create = (props) => {
                       rel="noreferrer nofollow"
                     >
                       <span className="">
-                        0xA3a122766d611a96c929C99D60A2b7e622705b6B
+                        {data.contractAddress}
                         <div
                           role="button"
                           tabIndex="0"
@@ -234,11 +245,11 @@ const Create = (props) => {
                     <p className="">(Do not send BNB to the token address!)</p>
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td>Total Supply</td>
                   <td>420,000,000,000,000,000 OPRAH</td>
-                </tr>
-                <tr>
+                </tr> */}
+                {/* <tr>
                   <td>Tokens For Presale</td>
                   <td>127,315,594,476,254,640 OPRAH</td>
                 </tr>
@@ -249,10 +260,14 @@ const Create = (props) => {
                 <tr>
                   <td>Initial Market Cap (estimate)</td>
                   <td>$2,329</td>
-                </tr>
+                </tr> */}
                 <tr>
                   <td>Soft Cap</td>
                   <td>{data.softcap} BNB</td>
+                </tr>
+                <tr>
+                  <td>Hard Cap</td>
+                  <td>{data.hardcap} BNB</td>
                 </tr>
                 <tr>
                   <td>Presale Start Time</td>
@@ -280,7 +295,11 @@ const Create = (props) => {
                   <td>{data.liquidity} %</td>
                 </tr>
                 <tr>
-                  <td>Liquidity Lockup Time</td>
+                  <td>Unlock Liquidity %</td>
+                  <td>100% - {data.liquidity}%</td>
+                </tr>
+                <tr>
+                  <td>Liquidity Unlock Time</td>
                   <td>{data.liquidityDate}</td>
                 </tr>
               </tbody>
@@ -356,7 +375,13 @@ const Create = (props) => {
           >
             <div className="d-flex justify-content-between p-4">
               <span className="text-start">Status</span>
-              <span className="text-success text-end">Incoming</span>
+              {isEnded ? (
+              <span className="badge badge-danger my-auto mx-2">Ended</span>
+            ) : isUpcoming ? (
+              <span className="badge badge-success my-auto mx-2">Live</span>
+              ) : (
+                <span className="badge badge-primary my-auto mx-2">Upcoming</span>
+            )}
             </div>
             <hr />
             <div className="d-flex justify-content-between p-4">

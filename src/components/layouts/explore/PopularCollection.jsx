@@ -10,9 +10,9 @@ const PopularCollection = (props) => {
     setVisible((prevValue) => prevValue + 4);
   };
   // const [presaleStatus, setPresaleSatus] = userState('Upcoming')
-    const location = useLocation();
-    const link = location.pathname.split("/").pop();
-  
+  const location = useLocation();
+  const link = location.pathname.split("/").pop();
+
   return (
     <section className="tf-section trendy-colection-page style-2">
       <div className="container">
@@ -104,9 +104,13 @@ const PopularCollection = (props) => {
                 <div className="product-content">
                   <div className="product-author flex">
                     <div className="avatar">
-                      <img src={item.logo} alt="Bidzen" />
+                      <img src={item.logo} alt="Launchpad" />
                     </div>
                   </div>
+                  <h4 className="title">
+                    <Link to="/item-details">{item.title}</Link>{" "}
+                    <h5>{item.projectName}</h5>{" "}
+                  </h4>
                   <h4 className="title">
                     <Link to="/item-details">{item.title}</Link>{" "}
                     <p>1 BNB = {item.rate}</p>{" "}

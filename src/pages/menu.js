@@ -109,6 +109,17 @@ const menus = [
             },
         ],
     },
+    {
+        id: 8,
+        name: 'Leaderboard',
+        namesub: [
+            {
+                id: 1,
+                sub: 'View leaderboard',
+                links: '/leaderboard'
+            },
+        ],
+    },
 
 ]
 

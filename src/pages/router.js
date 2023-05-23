@@ -34,6 +34,7 @@ import ReportPresale from './ReportPresale';
 import ViewPresale from './ViewPresale';
 import React from "react";
 import ViewAlert from "./ViewAlert";
+import Leaderboard from "./Leaderboard";
 import AdminRoutes from './AdminRoutes';
 
 const routes = [
@@ -63,6 +64,7 @@ const routes = [
     { path: '/request-kyc', component: <RequestKYC /> },
     { path: '/presale/:id', component: <ViewPresale /> },
     { path: '/alerts/', component: <ViewAlert /> },
+    { path: '/leaderboard/', component: <Leaderboard /> },
     
     // ---------------     Admin Routes       ----------------------------
     

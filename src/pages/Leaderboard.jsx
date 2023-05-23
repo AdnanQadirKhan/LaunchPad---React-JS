@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
 import LatestCollection from "../components/layouts/explore/LatestCollection";
 import dataCollections from "../assets/fake-data/dataCollections";
-import PopularCollection from "../components/layouts/explore/PopularCollectionInvestment";
+import PopularCollection from "../components/layouts/explore/PopularCollectionLeaderboard";
 import dataPopularCollection from "../assets/fake-data/dataPopularCollection";
 import { Newsletters } from "../components/layouts/home/Newsletters";
 import Footer from "../components/footer/FooterStyle2";
@@ -11,9 +11,9 @@ import http from "../Services/httpService";
 
 const Explore01 = () => {
   const [list, setList] = useState([]);
-  console.log('Investment',list);
+  console.log(list);
   useEffect(() => {
-    http.get("investment/bnb").then((res) => setList(res.data));
+    http.get("presale/leaderboard").then((res) => setList(res.data));
   }, []);
   return (
     <div className="explore">

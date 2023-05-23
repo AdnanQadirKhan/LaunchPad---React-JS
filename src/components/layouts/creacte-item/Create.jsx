@@ -4,32 +4,44 @@ import { enqueueSnackbar } from "notistack";
 import http from "./../../../Services/httpService";
 import AddressContext from '../../../AddressContext';
 import { useContext } from 'react';
+import { ethers } from 'ethers';
+import moment from "moment"
+import Abi from "../../../contracts/contractAbi.json";
 
 const Create = () => {
-   
-      const {  address , setAddress} = useContext(AddressContext);
-    // const [walletAddress, setWalletAddress] = useState("");
-    // useEffect(() => {
-    //     setWalletAddress(address);
-    // }, [])
-    console.log("addressaddress: ", address);
+    
+    const handleFileUpload = async (e) => {
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file);
+        setPresale({
+          ...presale,
+          logo: {
+            data: base64,
+            contentType: file.type
+          }
+        });
+      };
+      
+
+    const { address, setAddress } = useContext(AddressContext);
     const [presale, setPresale] = useState({
         contractAddress: "",
-        rate: "",
-        listingRate: "",
-        softcap: "",
-        hardcap: "",
-        minimum: "",
-        maximum: "",
-        liquidity: "",
-        liquidityDate: "",
+        rate: null,
+        listingRate: null,
+        softcap: null,
+        hardcap: null,
+        minimum: null,
+        maximum: null,
+        liquidity: null,
+        liquidityDate: null,
         // hasPresale: "",
-        whitelistAddress: "",
-        endTime: "",
-        startTime: "",
+        whitelistAddress: null,
+        endTime: null,
+        startTime: null,
         projectName: "",
         projectDescription: "",
         websiteLink: "",
+        // name: "",
         logo: "",
         videoLink: "",
         youtube: "",
@@ -41,12 +53,122 @@ const Create = () => {
         instagram: "",
         reddit: "",
     });
-    const handleAdd = () => {
-        const { contractAddress, rate, listingRate, softcap, hardcap, minimum, maximum, liquidity, liquidityDate, whitelistAddress, endTime, startTime, projectName, projectDescription, websiteLink, logo, videoLink, youtube, twitter, linkedin, telegram, discord, github, instagram, reddit } = presale;
+    const [Status, setStatus] = useState("");
+    const StartTimeFunc = (e) => {
+        const dateTimeValue = e.target.value;
+        console.log("Selected date and time:", dateTimeValue);
+        // parse the selected date and time string into a moment object using format 'YYYY-MM-DDTHH:mm'
+        const selectedDateTime = moment(dateTimeValue, "YYYY-MM-DDTHH:mm");
+        console.log("Selected date and time as moment object:", selectedDateTime);
+        // convert the moment object to a unix timestamp in seconds
+        const timestamp = selectedDateTime.unix();
+        console.log("Start Unix timestamp:", timestamp);
+        setPresale({
+            ...presale,
+            [e.target.name]: timestamp,
+        });
+    }
+    const EndTimeFunc = (e) => {
+        const dateTimeValue = e.target.value;
+        console.log("Selected date and time:", dateTimeValue);
+        // parse the selected date and time string into a moment object using format 'YYYY-MM-DDTHH:mm'
+        const selectedDateTime = moment(dateTimeValue, "YYYY-MM-DDTHH:mm");
+        console.log("Selected date and time as moment object:", selectedDateTime);
+        // convert the moment object to a unix timestamp in seconds
+        const endtimestamp = selectedDateTime.unix();
+        console.log("End Unix timestamp:", endtimestamp);
+        setPresale({
+            ...presale,
+            [e.target.name]: endtimestamp,
+        });
+    }
+
+    async function getAllData() {
+        console.log('Start Time: ', presale.startTime);
+        console.log('End Time: ', presale.endTime);
+        // event.preventDefault();
+        // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        // setAddress(accounts[0]);
+        if (typeof window.ethereum !== 'undefined') {
+            setStatus("Wait...")
+
+            try {
+                const data = "0x009Dddd6E6c46F1E9557fADfe643f655CC6A4eFb";
+                const providers = new ethers.providers.Web3Provider(window.ethereum);
+                await window.ethereum.enable();
+                const signer = providers.getSigner();
+                const contract = new ethers.Contract(data, Abi, signer);
+
+                // console.log(
+                //     '0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302',
+                //     presale.rate,
+                //     presale.listingRate,
+                //     presale.softcap,
+                //     presale.hardcap,
+                //     presale.minimum,
+                //     presale.maximum,
+                //     presale.startTime,
+                //     123123123,
+                //     45,
+                //     presale.liquidity,
+                //     false,
+                //     ['0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302'],
+                //     466743434563
+
+                // )
+
+                const sendTX = await contract.createPresale(
+
+                    '0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302',
+                    presale.rate,
+                    presale.listingRate,
+                    presale.softcap,
+                    presale.hardcap,
+                    presale.minimum,
+                    presale.maximum,
+                    presale.startTime,
+                    presale.endTime,
+                    45,
+                    presale.liquidity,
+                    false,
+                    ['0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302'],
+                    466743434563
+
+
+                )
+                // await sendTX.wait()
+                console.log(sendTX)
+                const check = sendTX.toString()
+                console.log(check)
+                setStatus("successfully sent transaction")
+                return true;
+            }
+            catch (error) {
+                if (presale.contractAddress === '') {
+                    setStatus("Please fill all the fields")
+                }
+
+                else {
+                    console.log(error)
+                    setStatus("Something went wrong")
+                }
+                return false;
+            }
+            // return false;
+        }
+    }
+    const handleAdd = async () => {
+        const { contractAddress, rate, listingRate, softcap, hardcap, minimum, maximum, liquidity, liquidityDate, whitelistAddress, endTime, startTime, projectName, projectDescription, websiteLink, name, logo, videoLink, youtube, twitter, linkedin, telegram, discord, github, instagram, reddit } = presale;
         if (contractAddress === null || contractAddress.trim() === "" || rate === null || rate.trim() === "" || listingRate === null || listingRate.trim() === "" || liquidity === null || liquidity.trim() === "") {
             enqueueSnackbar("All fields are required", { variant: "info" });
             return;
         }
+        const success = await getAllData();
+        if (success) {
+            enqueueSnackbar("Failed to add data in blockchain", { variant: "info" });
+            return;
+        }
+
         http.post("presale", { walletAddress: address[0], ...presale }).then((res) => {
             // console.log(res.data);
             setPresale({
@@ -66,6 +188,7 @@ const Create = () => {
                 projectName: "",
                 projectDescription: "",
                 websiteLink: "",
+                // name: "",
                 logo: "",
                 videoLink: "",
                 youtube: "",
@@ -77,16 +200,15 @@ const Create = () => {
                 instagram: "",
                 reddit: "",
             });
-            enqueueSnackbar("Successfully added", { variant: "success" });
+            enqueueSnackbar("Successfully Added", { variant: "success" });
             return;
-        })
-            .catch((error) => {
-                console.log(error);
-                enqueueSnackbar(error.response.data, {
-                    variant: "info",
-                });
-                return;
+        }).catch((error) => {
+            console.log(error);
+            enqueueSnackbar(error.response.data, {
+                variant: "info",
             });
+            return;
+        });
         return false;
     };
     const handleChange = (e) => {
@@ -231,7 +353,7 @@ const Create = () => {
                                             name="startTime"
                                             type="datetime-local"
                                             value={presale.startTime}
-                                            onChange={(e) => handleChange(e)}
+                                            onChange={(e) => StartTimeFunc(e)}
                                             placeholder="Liquidity % for PancakeSwap" required />
                                     </div>
                                     <p className="desc">End Time:</p>
@@ -239,7 +361,7 @@ const Create = () => {
                                         <input
                                             name="endTime"
                                             value={presale.endTime}
-                                            onChange={(e) => handleChange(e)}
+                                            onChange={(e) => EndTimeFunc(e)}
                                             type="datetime-local" placeholder="Liquidity % for PancakeSwap" required />
                                     </div>
 
@@ -274,13 +396,14 @@ const Create = () => {
                                             value={presale.websiteLink}
                                             placeholder="Website Link" required />
                                         <label className="uploadFile">
-                                            <span className="filename">{presale.logo === "" ? "Upload Logo" : "Uploaded"} </span>
+                                            <span className="filename">{presale.logo  ? "Uploaded" : "Upload Logo"} </span>
                                             <input
                                                 type="file"
-                                                value={presale.logo}
                                                 className="inputfile form-control"
                                                 name="logo"
-                                                onChange={(e) => handleChange(e)}
+                                                id='file-upload'
+                                                accept='.jpeg, .png, .jpg'
+                                                onChange={(e) => handleFileUpload(e)}
                                             />
                                             <span className="icon"><i className="far fa-cloud-upload"></i></span>
 
@@ -385,8 +508,67 @@ const Create = () => {
                     </div>
                 </div>
             </div>
+
+            {/* <div className="container my-4">
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="form-create-item-content">
+                            <div className="form-create-item">
+                                <div className="sc-heading">
+                                    <h3>Create Presale</h3>
+                                    <p className="desc">Create a custom presale for your token</p>
+                                </div>
+                                <div id="create-item-1"
+                                // action="#" method="GET" acceptCharset="utf-8"
+                                >
+                                   
+                                    <div className="input-group">
+                                        <input
+                                            // id="comment-message"
+                                            name="contractAddress"
+                                            onChange={(e) => handleChange(e)}
+                                            type="text"
+                                            value={presale.contractAddress}
+                                            placeholder="Contract Address"
+                                            required
+                                        />
+                                    </div>
+
+
+
+
+
+                                    <button
+                                        // name="submit" 
+                                        // type="submit" 
+                                        // id="submit"
+                
+                                        className="sc-button style letter style-2"><span>Create Presale</span>{" "} </button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div> */}
         </section>
+
     );
 };
 
 export default Create;
+
+function convertToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        const base64Data = fileReader.result.split(',')[1]; // Extract Base64 data from the result
+        resolve(base64Data);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  }
+  
