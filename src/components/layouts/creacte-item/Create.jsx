@@ -93,7 +93,7 @@ const Create = () => {
             setStatus("Wait...")
 
             try {
-                const data = "0x009Dddd6E6c46F1E9557fADfe643f655CC6A4eFb";
+                const data = "0xF40c96ab4a69adDf66F4BA4454aD8E7013328301";
                 const providers = new ethers.providers.Web3Provider(window.ethereum);
                 await window.ethereum.enable();
                 const signer = providers.getSigner();
@@ -119,7 +119,7 @@ const Create = () => {
 
                 const sendTX = await contract.createPresale(
 
-                    '0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302',
+                    presale.contractAddress.toString(),
                     presale.rate,
                     presale.listingRate,
                     presale.softcap,
@@ -128,13 +128,11 @@ const Create = () => {
                     presale.maximum,
                     presale.startTime,
                     presale.endTime,
-                    45,
+                    presale.token,
                     presale.liquidity,
-                    false,
+                    presale.whitelistAddress == null ? false : true,
                     ['0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302'],
                     466743434563
-
-
                 )
                 // await sendTX.wait()
                 console.log(sendTX)

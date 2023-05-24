@@ -36,7 +36,7 @@ const Create = () => {
       setStatus("Wait...")
 
       try {
-        const data = "0x656736684Cf40670f6A7F1cDE2B16b1843b4549a";
+        const data = "0x021E52E65944A53F8b436c7239493968F3565906";
         const providers = new ethers.providers.Web3Provider(window.ethereum);
         await window.ethereum.enable();
         const signer = providers.getSigner();
