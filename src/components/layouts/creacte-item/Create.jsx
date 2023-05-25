@@ -20,7 +20,7 @@ const Create = () => {
             contentType: file.type
           }
         });
-      };
+    };
       
 
     const { address, setAddress } = useContext(AddressContext);
@@ -54,6 +54,15 @@ const Create = () => {
         reddit: "",
     });
     const [Status, setStatus] = useState("");
+
+    function splitWhitelistUsersFunc(e){
+
+        const data = e.target.value
+        const dataSplit = data.split(",")
+        console.log(data.split(","))
+        return dataSplit
+    }
+
     const StartTimeFunc = (e) => {
         const dateTimeValue = e.target.value;
         console.log("Selected date and time:", dateTimeValue);
@@ -71,17 +80,48 @@ const Create = () => {
     const EndTimeFunc = (e) => {
         const dateTimeValue = e.target.value;
         console.log("Selected date and time:", dateTimeValue);
+        
         // parse the selected date and time string into a moment object using format 'YYYY-MM-DDTHH:mm'
         const selectedDateTime = moment(dateTimeValue, "YYYY-MM-DDTHH:mm");
         console.log("Selected date and time as moment object:", selectedDateTime);
+        
         // convert the moment object to a unix timestamp in seconds
-        const endtimestamp = selectedDateTime.unix();
-        console.log("End Unix timestamp:", endtimestamp);
+        const endTimestamp = selectedDateTime.unix();
+        console.log("End Unix timestamp:", endTimestamp);
+        
+        // Update the state with the selected date and timestamp
         setPresale({
-            ...presale,
-            [e.target.name]: endtimestamp,
+          ...presale,
+          [e.target.name]: endTimestamp,
         });
-    }
+        
+        // Display the selected date on the frontend
+        const selectedDate = selectedDateTime.format("YYYY-MM-DD");
+        document.getElementById("endTime").innerText = selectedDate;
+      };
+    const dateLock = (e) => {
+        const dateTimeValue = e.target.value;
+        console.log("Selected date and time:", dateTimeValue);
+        
+        // parse the selected date and time string into a moment object using format 'YYYY-MM-DDTHH:mm'
+        const selectedDateTime = moment(dateTimeValue, "YYYY-MM-DDTHH:mm");
+        console.log("Selected date and time as moment object:", selectedDateTime);
+        
+        // convert the moment object to a unix timestamp in seconds
+        const endTimestamp = selectedDateTime.unix();
+        console.log("End Unix timestamp:", endTimestamp);
+        
+        // Update the state with the selected date and timestamp
+        setPresale({
+          ...presale,
+          [e.target.name]: endTimestamp,
+        });
+        
+        // Display the selected date on the frontend
+        const selectedDate = selectedDateTime.format("YYYY-MM-DD");
+        document.getElementById("endTime").innerText = selectedDate;
+      };
+      
 
     async function getAllData() {
         console.log('Start Time: ', presale.startTime);
@@ -93,7 +133,7 @@ const Create = () => {
             setStatus("Wait...")
 
             try {
-                const data = "0x009Dddd6E6c46F1E9557fADfe643f655CC6A4eFb";
+                const data = "0xF40c96ab4a69adDf66F4BA4454aD8E7013328301";
                 const providers = new ethers.providers.Web3Provider(window.ethereum);
                 await window.ethereum.enable();
                 const signer = providers.getSigner();
@@ -116,10 +156,9 @@ const Create = () => {
                 //     466743434563
 
                 // )
-
                 const sendTX = await contract.createPresale(
 
-                    '0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302',
+                    presale.contractAddress,
                     presale.rate,
                     presale.listingRate,
                     presale.softcap,
@@ -128,13 +167,11 @@ const Create = () => {
                     presale.maximum,
                     presale.startTime,
                     presale.endTime,
-                    45,
+                    100,
                     presale.liquidity,
-                    false,
-                    ['0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302'],
-                    466743434563
-
-
+                    presale.whitelistAddress == null ? false : true,
+                    splitWhitelistUsersFunc(presale.whitelistAddress),
+                    presale.liquidityDate
                 )
                 // await sendTX.wait()
                 console.log(sendTX)
@@ -164,7 +201,7 @@ const Create = () => {
             return;
         }
         const success = await getAllData();
-        if (success) {
+        if (!success) {
             enqueueSnackbar("Failed to add data in blockchain", { variant: "info" });
             return;
         }
@@ -308,7 +345,7 @@ const Create = () => {
                                             required />
                                         <input
                                             name="liquidityDate"
-                                            onChange={(e) => handleChange(e)}
+                                            onChange={(e) => dateLock(e)}
                                             value={presale.liquidityDate}
                                             type="date"
                                             placeholder="Unlock Date" required />
@@ -350,6 +387,7 @@ const Create = () => {
                                     <p className="desc">Start Time:</p>
                                     <div className="input-group">
                                         <input
+                                            id="startTime"
                                             name="startTime"
                                             type="datetime-local"
                                             value={presale.startTime}
@@ -359,6 +397,7 @@ const Create = () => {
                                     <p className="desc">End Time:</p>
                                     <div className="input-group">
                                         <input
+                                            id="endTime"
                                             name="endTime"
                                             value={presale.endTime}
                                             onChange={(e) => EndTimeFunc(e)}
@@ -403,7 +442,7 @@ const Create = () => {
                                                 name="logo"
                                                 id='file-upload'
                                                 accept='.jpeg, .png, .jpg'
-                                                onChange={(e) => handleFileUpload(e)}
+                                                onChange={(e) => handleChange(e)}
                                             />
                                             <span className="icon"><i className="far fa-cloud-upload"></i></span>
 
