@@ -20,7 +20,7 @@ const Create = () => {
             contentType: file.type
           }
         });
-      };
+    };
       
 
     const { address, setAddress } = useContext(AddressContext);
@@ -71,17 +71,26 @@ const Create = () => {
     const EndTimeFunc = (e) => {
         const dateTimeValue = e.target.value;
         console.log("Selected date and time:", dateTimeValue);
+        
         // parse the selected date and time string into a moment object using format 'YYYY-MM-DDTHH:mm'
         const selectedDateTime = moment(dateTimeValue, "YYYY-MM-DDTHH:mm");
         console.log("Selected date and time as moment object:", selectedDateTime);
+        
         // convert the moment object to a unix timestamp in seconds
-        const endtimestamp = selectedDateTime.unix();
-        console.log("End Unix timestamp:", endtimestamp);
+        const endTimestamp = selectedDateTime.unix();
+        console.log("End Unix timestamp:", endTimestamp);
+        
+        // Update the state with the selected date and timestamp
         setPresale({
-            ...presale,
-            [e.target.name]: endtimestamp,
+          ...presale,
+          [e.target.name]: endTimestamp,
         });
-    }
+        
+        // Display the selected date on the frontend
+        const selectedDate = selectedDateTime.format("YYYY-MM-DD");
+        document.getElementById("endTime").innerText = selectedDate;
+      };
+      
 
     async function getAllData() {
         console.log('Start Time: ', presale.startTime);
@@ -350,6 +359,7 @@ const Create = () => {
                                     <p className="desc">Start Time:</p>
                                     <div className="input-group">
                                         <input
+                                            id="startTime"
                                             name="startTime"
                                             type="datetime-local"
                                             value={presale.startTime}
@@ -359,6 +369,7 @@ const Create = () => {
                                     <p className="desc">End Time:</p>
                                     <div className="input-group">
                                         <input
+                                            id="endTime"
                                             name="endTime"
                                             value={presale.endTime}
                                             onChange={(e) => EndTimeFunc(e)}
@@ -403,7 +414,7 @@ const Create = () => {
                                                 name="logo"
                                                 id='file-upload'
                                                 accept='.jpeg, .png, .jpg'
-                                                onChange={(e) => handleFileUpload(e)}
+                                                onChange={(e) => handleChange(e)}
                                             />
                                             <span className="icon"><i className="far fa-cloud-upload"></i></span>
 
