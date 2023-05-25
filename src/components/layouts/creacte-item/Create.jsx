@@ -37,6 +37,7 @@ const Create = () => {
         // hasPresale: "",
         whitelistAddress: null,
         endTime: null,
+        tokens: null,
         startTime: null,
         projectName: "",
         projectDescription: "",
@@ -60,7 +61,10 @@ const Create = () => {
         const data = e.target.value
         const dataSplit = data.split(",")
         console.log(data.split(","))
-        return dataSplit
+        setPresale({
+            ...presale,
+            [e.target.name]: dataSplit,
+        });
     }
 
     const StartTimeFunc = (e) => {
@@ -96,8 +100,8 @@ const Create = () => {
         });
         
         // Display the selected date on the frontend
-        const selectedDate = selectedDateTime.format("YYYY-MM-DD");
-        document.getElementById("endTime").innerText = selectedDate;
+        // const selectedDate = selectedDateTime.format("YYYY-MM-DD");
+        // document.getElementById("endTime").innerText = selectedDate;
       };
     const dateLock = (e) => {
         const dateTimeValue = e.target.value;
@@ -167,7 +171,7 @@ const Create = () => {
                     presale.maximum,
                     presale.startTime,
                     presale.endTime,
-                    100,
+                    parseInt(presale.tokens),
                     presale.liquidity,
                     presale.whitelistAddress == null ? false : true,
                     splitWhitelistUsersFunc(presale.whitelistAddress),
@@ -222,6 +226,7 @@ const Create = () => {
                 whitelistAddress: "",
                 endTime: "",
                 startTime: "",
+                tokens: "",
                 projectName: "",
                 projectDescription: "",
                 websiteLink: "",
@@ -402,6 +407,15 @@ const Create = () => {
                                             value={presale.endTime}
                                             onChange={(e) => EndTimeFunc(e)}
                                             type="datetime-local" placeholder="Liquidity % for PancakeSwap" required />
+                                    </div>
+                                    <p className="desc">No of Tokens:</p>
+                                    <div className="input-group">
+                                        <input
+                                            id="tokens"
+                                            name="tokens"
+                                            value={presale.tokens}
+                                            onChange={(e) => handleChange(e)}
+                                            type="number" placeholder="No. of Tokens" required />
                                     </div>
 
                                     <p className="desc"> .</p>
