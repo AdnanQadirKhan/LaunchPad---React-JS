@@ -111,20 +111,20 @@ const Create = (props) => {
   const isEnded = endTime < currentDate;
   let newDate;
   // if (isUpcoming) {
-    const timeDifference = startTime.getTime() - currentDate.getTime();
-    newDate = timeDifference;
-    // Assuming newDate contains the time difference in milliseconds
-    const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
-    const millisecondsPerMonth = 30 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a month
-    const millisecondsPerYear = 365 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a year
-    const millisecondsPerHour = 60 * 60 * 1000; // Number of milliseconds in an hour
+  const timeDifference = startTime.getTime() - currentDate.getTime();
+  newDate = timeDifference;
+  // Assuming newDate contains the time difference in milliseconds
+  const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+  const millisecondsPerMonth = 30 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a month
+  const millisecondsPerYear = 365 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a year
+  const millisecondsPerHour = 60 * 60 * 1000; // Number of milliseconds in an hour
 
-    // Calculate the difference in hours
-    const hours = Math.floor(newDate / millisecondsPerHour);
-    // Calculate the difference in days, months, and years
-    const days = Math.floor(newDate / millisecondsPerDay);
-    const months = Math.floor(newDate / millisecondsPerMonth);
-    const years = Math.floor(newDate / millisecondsPerYear);
+  // Calculate the difference in hours
+  const hours = Math.floor(newDate / millisecondsPerHour);
+  // Calculate the difference in days, months, and years
+  const days = Math.floor(newDate / millisecondsPerDay);
+  const months = Math.floor(newDate / millisecondsPerMonth);
+  const years = Math.floor(newDate / millisecondsPerYear);
   // }
   console.log(startTime);
 
@@ -334,50 +334,51 @@ const Create = (props) => {
             style={{ backgroundColor: "var(--color-3)" }}
           >
             {isUpcoming ? (
-            <div className="text-center my-2">
-              <h6 className="my-4">Presale Starts In </h6>
-              <strong className="mt-4">
-              <label htmlFor="">Hours:</label>
+              <div className="text-center my-2">
+                <h6 className="my-4">Presale Starts In </h6>
+                <strong className="mt-4">
+                  <label htmlFor="">Hours:</label>
 
-              <span
-                  className="p-2 mx-2"
-                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
-                >
-                  { hours.toString() }
-                </span>
-                <label htmlFor="">Days:</label>
-                <span
-                  className="p-2 mx-2"
-                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
-                >
-                  { days.toString() }
-                </span>
-                <label htmlFor="">Months:</label>
-                <span
-                  className="p-2 mx-2"
-                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
-                >
-                  { months.toString() }
-                </span>
-                <label htmlFor="">Year:</label>
-                <span
-                  className="p-2 mx-2"
-                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
-                >
-                  { years.toString() }
-                </span>
-                
-              </strong>
+                  <span
+                    className="p-2 mx-2"
+                    style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
+                  >
+                    {hours.toString()}
+                  </span>
+                  <label htmlFor="">Days:</label>
+                  <span
+                    className="p-2 mx-2"
+                    style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
+                  >
+                    {days.toString()}
+                  </span>
+                  <label htmlFor="">Months:</label>
+                  <span
+                    className="p-2 mx-2"
+                    style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
+                  >
+                    {months.toString()}
+                  </span>
+                  <label htmlFor="">Year:</label>
+                  <span
+                    className="p-2 mx-2"
+                    style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
+                  >
+                    {years.toString()}
+                  </span>
 
-              <div
-                style={{
-                  width: "0%",
-                  height: "15px",
-                  backgroundColor: "rgb(72, 199, 116)",
-                }}
-              ></div>
-            </div>
-            ) : <span>Ended</span> }
+                </strong>
+
+                <div
+                  style={{
+                    width: "0%",
+                    height: "15px",
+                    backgroundColor: "rgb(72, 199, 116)",
+                  }}
+                ></div>
+              </div>
+            ) : <span className="badge badge-danger my-auto mx-2">Ended</span>
+            }
             <div id="addBNB">
               <div className="d-flex justify-content-between p-4">
                 <span className="text-info text-start">{data.minimum} BNB</span>
