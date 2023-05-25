@@ -104,7 +104,7 @@ const PopularCollection = (props) => {
                 <div className="product-content">
                   <div className="product-author flex">
                     <div className="avatar">
-                      <img src={item.logo} alt="Launchpad" />
+                    <img src={require('../../../assets/images/logo/crypto.com-logo.png')} alt="Launchpad" />
                     </div>
                   </div>
                   <h4 className="title">
