@@ -107,7 +107,7 @@ const Create = (props) => {
   const endTime = new Date(data.endTime);
 
   // Check if the start date and time is not equal to or greater than the current date and time
-  const isUpcoming = startTime <= currentDate;
+  const isUpcoming = startTime >= currentDate;
   const isEnded = endTime < currentDate;
   let newDate;
   // if (isUpcoming) {
@@ -159,9 +159,9 @@ const Create = (props) => {
             {isEnded ? (
               <span className="badge badge-danger my-auto mx-2">Ended</span>
             ) : isUpcoming ? (
-              <span className="badge badge-success my-auto mx-2">Live</span>
+              <span className="badge badge-success my-auto mx-2">Upcoming</span>
             ) : (
-              <span className="badge badge-primary my-auto mx-2">Upcoming</span>
+              <span className="badge badge-primary my-auto mx-2">Live</span>
             )}
             <span className="my-auto mx-2">
               <button className="" style={{ padding: "4px" }} onClick={() => handleAlertClick(data)}>
@@ -333,7 +333,7 @@ const Create = (props) => {
             className="container p-4 my-2"
             style={{ backgroundColor: "var(--color-3)" }}
           >
-            
+            {isUpcoming ? (
             <div className="text-center my-2">
               <h6 className="my-4">Presale Starts In </h6>
               <strong className="mt-4">
@@ -377,6 +377,7 @@ const Create = (props) => {
                 }}
               ></div>
             </div>
+            ) : <span>Ended</span> }
             <div id="addBNB">
               <div className="d-flex justify-content-between p-4">
                 <span className="text-info text-start">{data.minimum} BNB</span>
@@ -405,9 +406,9 @@ const Create = (props) => {
               {isEnded ? (
                 <span className="badge badge-danger my-auto mx-2">Ended</span>
               ) : isUpcoming ? (
-                <span className="badge badge-success my-auto mx-2">Live</span>
+                <span className="badge badge-success my-auto mx-2">Upcoming</span>
               ) : (
-                <span className="badge badge-primary my-auto mx-2">Upcoming</span>
+                <span className="badge badge-primary my-auto mx-2">Live</span>
               )}
             </div>
             <hr />
