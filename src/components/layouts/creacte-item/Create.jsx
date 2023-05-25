@@ -54,6 +54,15 @@ const Create = () => {
         reddit: "",
     });
     const [Status, setStatus] = useState("");
+
+    function splitWhitelistUsersFunc(e){
+
+        const data = e.target.value
+        const dataSplit = data.split(",")
+        console.log(data.split(","))
+        return dataSplit
+    }
+
     const StartTimeFunc = (e) => {
         const dateTimeValue = e.target.value;
         console.log("Selected date and time:", dateTimeValue);
@@ -147,10 +156,9 @@ const Create = () => {
                 //     466743434563
 
                 // )
-
                 const sendTX = await contract.createPresale(
 
-                    presale.contractAddress.toString(),
+                    presale.contractAddress,
                     presale.rate,
                     presale.listingRate,
                     presale.softcap,
@@ -159,10 +167,10 @@ const Create = () => {
                     presale.maximum,
                     presale.startTime,
                     presale.endTime,
-                    presale.token,
+                    100,
                     presale.liquidity,
                     presale.whitelistAddress == null ? false : true,
-                    ['0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302'],
+                    splitWhitelistUsersFunc(presale.whitelistAddress),
                     presale.liquidityDate
                 )
                 // await sendTX.wait()
