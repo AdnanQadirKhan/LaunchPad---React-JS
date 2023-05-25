@@ -117,7 +117,10 @@ const Create = (props) => {
     const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
     const millisecondsPerMonth = 30 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a month
     const millisecondsPerYear = 365 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a year
+    const millisecondsPerHour = 60 * 60 * 1000; // Number of milliseconds in an hour
 
+    // Calculate the difference in hours
+    const hours = Math.floor(newDate / millisecondsPerHour);
     // Calculate the difference in days, months, and years
     const days = Math.floor(newDate / millisecondsPerDay);
     const months = Math.floor(newDate / millisecondsPerMonth);
@@ -330,9 +333,18 @@ const Create = (props) => {
             className="container p-4 my-2"
             style={{ backgroundColor: "var(--color-3)" }}
           >
+            
             <div className="text-center my-2">
               <h6 className="my-4">Presale Starts In </h6>
               <strong className="mt-4">
+              <label htmlFor="">Hours:</label>
+
+              <span
+                  className="p-2 mx-2"
+                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
+                >
+                  { hours.toString() }
+                </span>
                 <label htmlFor="">Days:</label>
                 <span
                   className="p-2 mx-2"
@@ -354,12 +366,7 @@ const Create = (props) => {
                 >
                   { years.toString() }
                 </span>
-                {/* <span
-                  className="p-2 mx-2"
-                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
-                >
-                  36
-                </span> */}
+                
               </strong>
 
               <div
