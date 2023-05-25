@@ -90,6 +90,28 @@ const Create = () => {
         const selectedDate = selectedDateTime.format("YYYY-MM-DD");
         document.getElementById("endTime").innerText = selectedDate;
       };
+    const dateLock = (e) => {
+        const dateTimeValue = e.target.value;
+        console.log("Selected date and time:", dateTimeValue);
+        
+        // parse the selected date and time string into a moment object using format 'YYYY-MM-DDTHH:mm'
+        const selectedDateTime = moment(dateTimeValue, "YYYY-MM-DDTHH:mm");
+        console.log("Selected date and time as moment object:", selectedDateTime);
+        
+        // convert the moment object to a unix timestamp in seconds
+        const endTimestamp = selectedDateTime.unix();
+        console.log("End Unix timestamp:", endTimestamp);
+        
+        // Update the state with the selected date and timestamp
+        setPresale({
+          ...presale,
+          [e.target.name]: endTimestamp,
+        });
+        
+        // Display the selected date on the frontend
+        const selectedDate = selectedDateTime.format("YYYY-MM-DD");
+        document.getElementById("endTime").innerText = selectedDate;
+      };
       
 
     async function getAllData() {
@@ -141,7 +163,7 @@ const Create = () => {
                     presale.liquidity,
                     presale.whitelistAddress == null ? false : true,
                     ['0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302'],
-                    466743434563
+                    presale.liquidityDate
                 )
                 // await sendTX.wait()
                 console.log(sendTX)
@@ -315,7 +337,7 @@ const Create = () => {
                                             required />
                                         <input
                                             name="liquidityDate"
-                                            onChange={(e) => handleChange(e)}
+                                            onChange={(e) => dateLock(e)}
                                             value={presale.liquidityDate}
                                             type="date"
                                             placeholder="Unlock Date" required />

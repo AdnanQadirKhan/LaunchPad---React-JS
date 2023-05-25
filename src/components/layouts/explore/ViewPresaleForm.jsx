@@ -29,6 +29,9 @@ const Create = (props) => {
   }, [address]);
 
   const data = props.data;
+
+
+
   // console.log(data);
   const handleAlertClick = (data) => {
     const obj = {
@@ -106,6 +109,20 @@ const Create = (props) => {
   // Check if the start date and time is not equal to or greater than the current date and time
   const isUpcoming = startTime <= currentDate;
   const isEnded = endTime < currentDate;
+  let newDate;
+  // if (isUpcoming) {
+    const timeDifference = startTime.getTime() - currentDate.getTime();
+    newDate = timeDifference;
+    // Assuming newDate contains the time difference in milliseconds
+    const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+    const millisecondsPerMonth = 30 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a month
+    const millisecondsPerYear = 365 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a year
+
+    // Calculate the difference in days, months, and years
+    const days = Math.floor(newDate / millisecondsPerDay);
+    const months = Math.floor(newDate / millisecondsPerMonth);
+    const years = Math.floor(newDate / millisecondsPerYear);
+  // }
   console.log(startTime);
 
   const handleChange = (e) => {
@@ -140,8 +157,8 @@ const Create = (props) => {
               <span className="badge badge-danger my-auto mx-2">Ended</span>
             ) : isUpcoming ? (
               <span className="badge badge-success my-auto mx-2">Live</span>
-              ) : (
-                <span className="badge badge-primary my-auto mx-2">Upcoming</span>
+            ) : (
+              <span className="badge badge-primary my-auto mx-2">Upcoming</span>
             )}
             <span className="my-auto mx-2">
               <button className="" style={{ padding: "4px" }} onClick={() => handleAlertClick(data)}>
@@ -316,30 +333,33 @@ const Create = (props) => {
             <div className="text-center my-2">
               <h6 className="my-4">Presale Starts In </h6>
               <strong className="mt-4">
+                <label htmlFor="">Days:</label>
                 <span
                   className="p-2 mx-2"
                   style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
                 >
-                  03
+                  { days.toString() }
                 </span>
+                <label htmlFor="">Months:</label>
                 <span
                   className="p-2 mx-2"
                   style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
                 >
-                  01
+                  { months.toString() }
                 </span>
+                <label htmlFor="">Year:</label>
                 <span
                   className="p-2 mx-2"
                   style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
                 >
-                  41
+                  { years.toString() }
                 </span>
-                <span
+                {/* <span
                   className="p-2 mx-2"
                   style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
                 >
                   36
-                </span>
+                </span> */}
               </strong>
 
               <div
@@ -376,12 +396,12 @@ const Create = (props) => {
             <div className="d-flex justify-content-between p-4">
               <span className="text-start">Status</span>
               {isEnded ? (
-              <span className="badge badge-danger my-auto mx-2">Ended</span>
-            ) : isUpcoming ? (
-              <span className="badge badge-success my-auto mx-2">Live</span>
+                <span className="badge badge-danger my-auto mx-2">Ended</span>
+              ) : isUpcoming ? (
+                <span className="badge badge-success my-auto mx-2">Live</span>
               ) : (
                 <span className="badge badge-primary my-auto mx-2">Upcoming</span>
-            )}
+              )}
             </div>
             <hr />
             <div className="d-flex justify-content-between p-4">
