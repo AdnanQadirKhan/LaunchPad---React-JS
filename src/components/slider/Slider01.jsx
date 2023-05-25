@@ -40,7 +40,7 @@ const SliderItem = props => (
                             <div className="button-slider">
                                 <Link to="/explore-01"
                                     className="sc-button btn-bordered-white style letter "><span>Explore projects</span></Link>
-                                <Link to="/create-item"
+                                <Link to="/create-presale"
                                     className="sc-button btn-bordered-white style file"><span>Create</span></Link>
                             </div>
                         </div>

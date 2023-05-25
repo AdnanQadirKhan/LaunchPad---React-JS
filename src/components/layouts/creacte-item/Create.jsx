@@ -9,19 +9,49 @@ import moment from "moment"
 import Abi from "../../../contracts/contractAbi.json";
 
 const Create = () => {
-    
+    const [contract, setContract] = useState('');
+    async function getAllTransactionData(e) {
+        console.log('contract');
+        if (typeof window.ethereum !== 'undefined') {
+            setStatus("Wait...")
+            const contractAddress = contract;
+
+            try {
+                const data = "0xF40c96ab4a69adDf66F4BA4454aD8E7013328301";
+                const providers = new ethers.providers.Web3Provider(window.ethereum);
+                await window.ethereum.enable();
+                const signer = providers.getSigner();
+                const contract = new ethers.Contract(data, Abi, signer);
+
+                const sendTX = await contract.withdrawAndDistributeToken(
+
+                    contractAddress,
+                )
+                console.log(sendTX)
+                const check = sendTX.toString()
+                console.log(check)
+                setStatus("successfully sent transaction")
+            }
+            catch (error) {
+
+                console.log(error)
+                setStatus("Something went wrong")
+            }
+            // return false;
+        }
+    }
     const handleFileUpload = async (e) => {
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
         setPresale({
-          ...presale,
-          logo: {
-            data: base64,
-            contentType: file.type
-          }
+            ...presale,
+            logo: {
+                data: base64,
+                contentType: file.type
+            }
         });
     };
-      
+
 
     const { address, setAddress } = useContext(AddressContext);
     const [presale, setPresale] = useState({
@@ -56,7 +86,7 @@ const Create = () => {
     });
     const [Status, setStatus] = useState("");
 
-    function splitWhitelistUsersFunc(e){
+    function splitWhitelistUsersFunc(e) {
 
         const data = e.target.value
         const dataSplit = data.split(",")
@@ -84,48 +114,48 @@ const Create = () => {
     const EndTimeFunc = (e) => {
         const dateTimeValue = e.target.value;
         console.log("Selected date and time:", dateTimeValue);
-        
+
         // parse the selected date and time string into a moment object using format 'YYYY-MM-DDTHH:mm'
         const selectedDateTime = moment(dateTimeValue, "YYYY-MM-DDTHH:mm");
         console.log("Selected date and time as moment object:", selectedDateTime);
-        
+
         // convert the moment object to a unix timestamp in seconds
         const endTimestamp = selectedDateTime.unix();
         console.log("End Unix timestamp:", endTimestamp);
-        
+
         // Update the state with the selected date and timestamp
         setPresale({
-          ...presale,
-          [e.target.name]: endTimestamp,
+            ...presale,
+            [e.target.name]: endTimestamp,
         });
-        
+
         // Display the selected date on the frontend
         // const selectedDate = selectedDateTime.format("YYYY-MM-DD");
         // document.getElementById("endTime").innerText = selectedDate;
-      };
+    };
     const dateLock = (e) => {
         const dateTimeValue = e.target.value;
         console.log("Selected date and time:", dateTimeValue);
-        
+
         // parse the selected date and time string into a moment object using format 'YYYY-MM-DDTHH:mm'
         const selectedDateTime = moment(dateTimeValue, "YYYY-MM-DDTHH:mm");
         console.log("Selected date and time as moment object:", selectedDateTime);
-        
+
         // convert the moment object to a unix timestamp in seconds
         const endTimestamp = selectedDateTime.unix();
         console.log("End Unix timestamp:", endTimestamp);
-        
+
         // Update the state with the selected date and timestamp
         setPresale({
-          ...presale,
-          [e.target.name]: endTimestamp,
+            ...presale,
+            [e.target.name]: endTimestamp,
         });
-        
+
         // Display the selected date on the frontend
-        const selectedDate = selectedDateTime.format("YYYY-MM-DD");
-        document.getElementById("endTime").innerText = selectedDate;
-      };
-      
+        // const selectedDate = selectedDateTime.format("YYYY-MM-DD");
+        // document.getElementById("endTime").innerText = selectedDate;
+    };
+
 
     async function getAllData() {
         console.log('Start Time: ', presale.startTime);
@@ -205,7 +235,7 @@ const Create = () => {
             return;
         }
         const success = await getAllData();
-        if (!success) {
+        if (success) {
             enqueueSnackbar("Failed to add data in blockchain", { variant: "info" });
             return;
         }
@@ -256,6 +286,12 @@ const Create = () => {
     const handleChange = (e) => {
         setPresale({
             ...presale,
+            [e.target.name]: e.target.value,
+        });
+    };
+    const handleAddressChange = (e) => {
+        setContract({
+            ...contract,
             [e.target.name]: e.target.value,
         });
     };
@@ -351,8 +387,8 @@ const Create = () => {
                                         <input
                                             name="liquidityDate"
                                             onChange={(e) => dateLock(e)}
-                                            value={presale.liquidityDate}
-                                            type="date"
+                                            // value={presale.liquidityDate}
+                                            type="datetime-local"
                                             placeholder="Unlock Date" required />
                                     </div>
                                     <div className="input-group style-2 ">
@@ -395,7 +431,7 @@ const Create = () => {
                                             id="startTime"
                                             name="startTime"
                                             type="datetime-local"
-                                            value={presale.startTime}
+                                            // value={presale.startTime}
                                             onChange={(e) => StartTimeFunc(e)}
                                             placeholder="Liquidity % for PancakeSwap" required />
                                     </div>
@@ -404,7 +440,7 @@ const Create = () => {
                                         <input
                                             id="endTime"
                                             name="endTime"
-                                            value={presale.endTime}
+                                            // value={presale.endTime}
                                             onChange={(e) => EndTimeFunc(e)}
                                             type="datetime-local" placeholder="Liquidity % for PancakeSwap" required />
                                     </div>
@@ -449,7 +485,7 @@ const Create = () => {
                                             value={presale.websiteLink}
                                             placeholder="Website Link" required />
                                         <label className="uploadFile">
-                                            <span className="filename">{presale.logo  ? "Uploaded" : "Upload Logo"} </span>
+                                            <span className="filename">{presale.logo ? "Uploaded" : "Upload Logo"} </span>
                                             <input
                                                 type="file"
                                                 className="inputfile form-control"
@@ -562,7 +598,7 @@ const Create = () => {
                 </div>
             </div>
 
-            {/* <div className="container my-4">
+            <div className="container my-4">
                 <div className="row">
                     <div className="col-md-12">
                         <div className="form-create-item-content">
@@ -574,14 +610,14 @@ const Create = () => {
                                 <div id="create-item-1"
                                 // action="#" method="GET" acceptCharset="utf-8"
                                 >
-                                   
+
                                     <div className="input-group">
                                         <input
                                             // id="comment-message"
                                             name="contractAddress"
-                                            onChange={(e) => handleChange(e)}
+                                            onChange={(e) => handleAddressChange(e)}
                                             type="text"
-                                            value={presale.contractAddress}
+                                            value={contract.contractAddress}
                                             placeholder="Contract Address"
                                             required
                                         />
@@ -595,15 +631,15 @@ const Create = () => {
                                         // name="submit" 
                                         // type="submit" 
                                         // id="submit"
-                
-                                        className="sc-button style letter style-2"><span>Create Presale</span>{" "} </button>
+
+                                        className="sc-button style letter style-2" onClick={ getAllTransactionData}><span>Create Presale</span>{" "} </button>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
-            </div> */}
+            </div>
         </section>
 
     );
@@ -613,15 +649,14 @@ export default Create;
 
 function convertToBase64(file) {
     return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        const base64Data = fileReader.result.split(',')[1]; // Extract Base64 data from the result
-        resolve(base64Data);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => {
+            const base64Data = fileReader.result.split(',')[1]; // Extract Base64 data from the result
+            resolve(base64Data);
+        };
+        fileReader.onerror = (error) => {
+            reject(error);
+        };
     });
-  }
-  
+}

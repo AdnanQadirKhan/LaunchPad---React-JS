@@ -377,7 +377,7 @@ const Create = (props) => {
                   }}
                 ></div>
               </div>
-            ) : <span className="badge badge-danger my-auto mx-2">Ended</span>
+            ) : <span className="badge badge-success my-auto mx-2">LIVE</span>
             }
             <div id="addBNB">
               <div className="d-flex justify-content-between p-4">
@@ -392,10 +392,13 @@ const Create = (props) => {
                 name="crypto"
                 id="crypto"
                 placeholder="0.0" />
-              {(
-                address[0] != "" &&
-                <button className="btn btn-light my-4" onClick={handleAdd}>Add Crypto</button>
+              {isUpcoming && address[0] !== "" && (
+                <button className="btn btn-light my-4" disabled onClick={handleAdd}>Invest</button>
               )}
+              {!isUpcoming && address[0] !== "" && (
+                <button className="btn btn-light my-4" onClick={handleAdd}>Invest</button>
+              )}
+
             </div>
           </div>
           <div
