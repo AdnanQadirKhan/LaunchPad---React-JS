@@ -174,7 +174,7 @@ const Create = () => {
                     parseInt(presale.tokens),
                     presale.liquidity,
                     presale.whitelistAddress == null ? false : true,
-                    splitWhitelistUsersFunc(presale.whitelistAddress),
+                    presale.whitelistAddress !== null && presale.whitelistAddress !== undefined ? (presale.whitelistAddress).split(',') : [],
                     presale.liquidityDate
                 )
                 // await sendTX.wait()
