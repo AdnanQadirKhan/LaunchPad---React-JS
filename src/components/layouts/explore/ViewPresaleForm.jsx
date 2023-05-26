@@ -418,7 +418,7 @@ const Create = (props) => {
                   }}
                 ></div>
               </div>
-            ) : <span className="badge badge-success my-auto mx-2">LIVE</span>
+            ) : <span></span>
             }
             <div id="addBNB">
               <div className="d-flex justify-content-between p-4">

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
 import LatestCollection from "../components/layouts/explore/LatestCollection";
 import dataCollections from "../assets/fake-data/dataCollections";
-import PopularCollection from "../components/layouts/explore/PopularCollection";
+import PopularCollection from "../components/layouts/explore/PopularCollectionAlert";
 import dataPopularCollection from "../assets/fake-data/dataPopularCollection";
 import { Newsletters } from "../components/layouts/home/Newsletters";
 import Footer from "../components/footer/FooterStyle2";
