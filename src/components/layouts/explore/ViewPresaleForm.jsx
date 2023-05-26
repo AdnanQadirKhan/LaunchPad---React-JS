@@ -5,9 +5,49 @@ import http from "../../../Services/httpService";
 import { useParams } from 'react-router-dom';
 import AddressContext from '../../../AddressContext';
 import { useContext } from 'react';
+import { ethers } from 'ethers';
+import Abi from "../../../contracts/contractAbi.json";
+
 
 
 const Create = (props) => {
+  const data = props.data;
+
+  const [contract, setContract] = useState({
+    crypto: "",
+    contractAddress: "",
+    
+});
+  async function getAllData() {
+    if (typeof window.ethereum !== 'undefined') {
+        // setStatus("Wait...")
+
+        try {
+            const new_data = "0xF40c96ab4a69adDf66F4BA4454aD8E7013328301";
+            const providers = new ethers.providers.Web3Provider(window.ethereum);
+            await window.ethereum.enable();
+            const signer = providers.getSigner();
+            const contract = new ethers.Contract(new_data, Abi, signer);
+            console.log("CA", data.contractAddress);
+            console.log("Crypto", bnb.crypto);
+            const sendTX = await contract.contribute(
+              data.contractAddress,
+              parseInt(bnb.crypto),
+              0.01
+            )
+            console.log(sendTX)
+            const check = sendTX.toString()
+            console.log(check)
+            // setStatus("successfully sent transaction")
+        }
+        catch (error) {
+
+                console.log(error)
+                // setStatus("Something went wrong")
+        }
+        // return false;
+    }
+}
   const { address, setAddress } = useContext(AddressContext);
   const { id } = useParams();
   const [kyc, setKyc] = useState([]);
@@ -27,9 +67,6 @@ const Create = (props) => {
         return;
       });
   }, [address]);
-
-  const data = props.data;
-
 
 
   // console.log(data);
@@ -54,7 +91,7 @@ const Create = (props) => {
   const [bnb, setBNB] = useState({
     crypto: null,
   });
-  const handleAdd = () => {
+  const handleAdd = async() => {
     const { crypto } = bnb;
     const cryptoValue = parseFloat(crypto);
     if (crypto === null || crypto === "") {
@@ -82,7 +119,11 @@ const Create = (props) => {
       walletAddress: props.data.walletAddress, // Pass the form data
       bnb: crypto, // Pass the BNB data
     };
-
+    const success = await getAllData();
+    if (!success) {
+        enqueueSnackbar("Failed to invest in blockchain", { variant: "info" });
+        return;
+    }
     http
       .post(`/investment/bnb/${id}`, requestBody)
       .then((res) => {
