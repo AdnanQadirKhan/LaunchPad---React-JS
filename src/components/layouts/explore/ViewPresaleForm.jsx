@@ -5,9 +5,49 @@ import http from "../../../Services/httpService";
 import { useParams } from 'react-router-dom';
 import AddressContext from '../../../AddressContext';
 import { useContext } from 'react';
+import { ethers } from 'ethers';
+import Abi from "../../../contracts/contractAbi.json";
+
 
 
 const Create = (props) => {
+  const data = props.data;
+
+  const [contract, setContract] = useState({
+    crypto: "",
+    contractAddress: "",
+    
+});
+  async function getAllData() {
+    if (typeof window.ethereum !== 'undefined') {
+        // setStatus("Wait...")
+
+        try {
+          const new_data = "0x0130a620B2d9Af0a0Fa23Ef57b12082825D85cE1";
+            const providers = new ethers.providers.Web3Provider(window.ethereum);
+            await window.ethereum.enable();
+            const signer = providers.getSigner();
+            const contract = new ethers.Contract(new_data, Abi, signer);
+            console.log("CA", data.contractAddress);
+            console.log("Crypto", bnb.crypto);
+            const sendTX = await contract.contribute(
+              data.contractAddress,
+              parseInt(bnb.crypto),
+              0.01
+            )
+            console.log(sendTX)
+            const check = sendTX.toString()
+            console.log(check)
+            // setStatus("successfully sent transaction")
+        }
+        catch (error) {
+
+                console.log(error)
+                // setStatus("Something went wrong")
+        }
+        // return false;
+    }
+}
   const { address, setAddress } = useContext(AddressContext);
   const { id } = useParams();
   const [kyc, setKyc] = useState([]);
@@ -27,9 +67,6 @@ const Create = (props) => {
         return;
       });
   }, [address]);
-
-  const data = props.data;
-
 
 
   // console.log(data);
@@ -54,7 +91,7 @@ const Create = (props) => {
   const [bnb, setBNB] = useState({
     crypto: null,
   });
-  const handleAdd = () => {
+  const handleAdd = async() => {
     const { crypto } = bnb;
     const cryptoValue = parseFloat(crypto);
     if (crypto === null || crypto === "") {
@@ -82,7 +119,11 @@ const Create = (props) => {
       walletAddress: props.data.walletAddress, // Pass the form data
       bnb: crypto, // Pass the BNB data
     };
-
+    const success = await getAllData();
+    if (!success) {
+        enqueueSnackbar("Failed to invest in blockchain", { variant: "info" });
+        return;
+    }
     http
       .post(`/investment/bnb/${id}`, requestBody)
       .then((res) => {
@@ -111,20 +152,20 @@ const Create = (props) => {
   const isEnded = endTime < currentDate;
   let newDate;
   // if (isUpcoming) {
-    const timeDifference = startTime.getTime() - currentDate.getTime();
-    newDate = timeDifference;
-    // Assuming newDate contains the time difference in milliseconds
-    const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
-    const millisecondsPerMonth = 30 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a month
-    const millisecondsPerYear = 365 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a year
-    const millisecondsPerHour = 60 * 60 * 1000; // Number of milliseconds in an hour
+  const timeDifference = startTime.getTime() - currentDate.getTime();
+  newDate = timeDifference;
+  // Assuming newDate contains the time difference in milliseconds
+  const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+  const millisecondsPerMonth = 30 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a month
+  const millisecondsPerYear = 365 * 24 * 60 * 60 * 1000; // Approximate number of milliseconds in a year
+  const millisecondsPerHour = 60 * 60 * 1000; // Number of milliseconds in an hour
 
-    // Calculate the difference in hours
-    const hours = Math.floor(newDate / millisecondsPerHour);
-    // Calculate the difference in days, months, and years
-    const days = Math.floor(newDate / millisecondsPerDay);
-    const months = Math.floor(newDate / millisecondsPerMonth);
-    const years = Math.floor(newDate / millisecondsPerYear);
+  // Calculate the difference in hours
+  const hours = Math.floor(newDate / millisecondsPerHour);
+  // Calculate the difference in days, months, and years
+  const days = Math.floor(newDate / millisecondsPerDay);
+  const months = Math.floor(newDate / millisecondsPerMonth);
+  const years = Math.floor(newDate / millisecondsPerYear);
   // }
   console.log(startTime);
 
@@ -334,50 +375,51 @@ const Create = (props) => {
             style={{ backgroundColor: "var(--color-3)" }}
           >
             {isUpcoming ? (
-            <div className="text-center my-2">
-              <h6 className="my-4">Presale Starts In </h6>
-              <strong className="mt-4">
-              <label htmlFor="">Hours:</label>
+              <div className="text-center my-2">
+                <h6 className="my-4">Presale Starts In </h6>
+                <strong className="mt-4">
+                  <label htmlFor="">Hours:</label>
 
-              <span
-                  className="p-2 mx-2"
-                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
-                >
-                  { hours.toString() }
-                </span>
-                <label htmlFor="">Days:</label>
-                <span
-                  className="p-2 mx-2"
-                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
-                >
-                  { days.toString() }
-                </span>
-                <label htmlFor="">Months:</label>
-                <span
-                  className="p-2 mx-2"
-                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
-                >
-                  { months.toString() }
-                </span>
-                <label htmlFor="">Year:</label>
-                <span
-                  className="p-2 mx-2"
-                  style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
-                >
-                  { years.toString() }
-                </span>
-                
-              </strong>
+                  <span
+                    className="p-2 mx-2"
+                    style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
+                  >
+                    {hours.toString()}
+                  </span>
+                  <label htmlFor="">Days:</label>
+                  <span
+                    className="p-2 mx-2"
+                    style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
+                  >
+                    {days.toString()}
+                  </span>
+                  <label htmlFor="">Months:</label>
+                  <span
+                    className="p-2 mx-2"
+                    style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
+                  >
+                    {months.toString()}
+                  </span>
+                  <label htmlFor="">Year:</label>
+                  <span
+                    className="p-2 mx-2"
+                    style={{ borderRadius: "4px", backgroundColor: "#c73bf9" }}
+                  >
+                    {years.toString()}
+                  </span>
 
-              <div
-                style={{
-                  width: "0%",
-                  height: "15px",
-                  backgroundColor: "rgb(72, 199, 116)",
-                }}
-              ></div>
-            </div>
-            ) : <span>Ended</span> }
+                </strong>
+
+                <div
+                  style={{
+                    width: "0%",
+                    height: "15px",
+                    backgroundColor: "rgb(72, 199, 116)",
+                  }}
+                ></div>
+              </div>
+            ) : <span className="badge badge-success my-auto mx-2">LIVE</span>
+            }
             <div id="addBNB">
               <div className="d-flex justify-content-between p-4">
                 <span className="text-info text-start">{data.minimum} BNB</span>
@@ -391,10 +433,13 @@ const Create = (props) => {
                 name="crypto"
                 id="crypto"
                 placeholder="0.0" />
-              {(
-                address[0] != "" &&
-                <button className="btn btn-light my-4" onClick={handleAdd}>Add Crypto</button>
+              {isUpcoming && address[0] !== "" && (
+                <button className="btn btn-light my-4" disabled onClick={handleAdd}>Invest</button>
               )}
+              {!isUpcoming && address[0] !== "" && (
+                <button className="btn btn-light my-4" onClick={handleAdd}>Invest</button>
+              )}
+
             </div>
           </div>
           <div
