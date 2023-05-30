@@ -49,7 +49,7 @@ const routes = [
     // { path: '/view-locks', component: <ViewLock /> },
     { path: '/creator', component: <Creator /> },
     { path: '/item', component: <Item /> },
-    { path: '/item-details', component: <ItemDetails /> },
+    //{ path: '/item-details', component: <ItemDetails /> },
     { path: '/blog', component: <Blog /> },
     { path: '/blog-details', component: <BlogDetails /> },
     { path: '/authors', component: <Authors /> },
