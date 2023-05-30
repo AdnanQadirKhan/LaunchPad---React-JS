@@ -22,7 +22,8 @@ const Create = () => {
                 const signer = providers.getSigner();
                 const contract = new ethers.Contract(data, Abi, signer);
 
-                const sendTX = await contract.createAirdrop(tokenAddress, walletAddressList, tokenAmount)
+                const sendTX = await contract.createAirdrop(tokenAddress,
+                     walletAddressList, tokenAmount)
                 // await sendTX.wait()
                 console.log(sendTX)
                 const check = sendTX.toString()

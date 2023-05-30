@@ -173,23 +173,22 @@ const Create = () => {
                 const signer = providers.getSigner();
                 const contract = new ethers.Contract(data, Abi, signer);
 
-                // console.log(
-                //     '0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302',
-                //     presale.rate,
-                //     presale.listingRate,
-                //     presale.softcap,
-                //     presale.hardcap,
-                //     presale.minimum,
-                //     presale.maximum,
-                //     presale.startTime,
-                //     123123123,
-                //     45,
-                //     presale.liquidity,
-                //     false,
-                //     ['0x1BcFB54fFdC031e56b8aeCE05c8b85F14a0CF302'],
-                //     466743434563
-
-                // )
+                console.log(
+                    presale.contractAddress,
+                    presale.rate,
+                    presale.listingRate,
+                    presale.softcap,
+                    presale.hardcap,
+                    presale.minimum,
+                    presale.maximum,
+                    presale.startTime,
+                    presale.endTime,
+                    parseInt(presale.tokens),
+                    presale.liquidity,
+                    presale.whitelistAddress == null ? false : true,
+                    presale.whitelistAddress ,
+                    presale.liquidityDate
+                )
                 const sendTX = await contract.createPresale(
 
                     presale.contractAddress,
@@ -235,12 +234,10 @@ const Create = () => {
             return;
         }
         const success = await getAllData();
-        if (success) {
-            enqueueSnackbar("Failed to add data in blockchain", { variant: "info" });
-            return;
-        }
+    
 
-        http.post("presale", { walletAddress: address[0], ...presale }).then((res) => {
+        if(success){       
+             http.post("presale", { walletAddress: address[0], ...presale }).then((res) => {
             // console.log(res.data);
             setPresale({
                 contractAddress: "",
@@ -282,6 +279,14 @@ const Create = () => {
             return;
         });
         return false;
+            
+        }else{           enqueueSnackbar("Failed to add data in blockchain", { variant: "info" });
+        return;
+
+        }
+
+
+
     };
     const handleChange = (e) => {
         setPresale({
@@ -597,7 +602,7 @@ const Create = () => {
                     </div>
                 </div>
             </div>
-
+{/* 
             <div className="container my-4">
                 <div className="row">
                     <div className="col-md-12">
@@ -639,7 +644,7 @@ const Create = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </section>
 
     );

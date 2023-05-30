@@ -31,9 +31,10 @@ const Create = (props) => {
             console.log("CA", data.contractAddress);
             console.log("Crypto", bnb.crypto);
             const sendTX = await contract.contribute(
+              { value: ethers.utils.parseEther('0.001') },
               data.contractAddress,
-              parseInt(bnb.crypto),
-              0.01
+              parseInt(bnb.crypto)
+              
             )
             console.log(sendTX)
             const check = sendTX.toString()
