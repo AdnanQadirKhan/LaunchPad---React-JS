@@ -235,7 +235,7 @@ const Create = () => {
             return;
         }
         const success = await getAllData();
-        if (success) {
+        if (!success) {
             enqueueSnackbar("Failed to add data in blockchain", { variant: "info" });
             return;
         }
