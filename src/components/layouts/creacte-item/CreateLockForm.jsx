@@ -36,7 +36,7 @@ const Create = () => {
       setStatus("Wait...")
 
       try {
-        const data = "0x01f6e338834Df9d949Ec339C182E2b5716b7925c";
+        const data = "0x31b749eBA7fd0968c655A241B2cde2A65bcd0fE4";
         const providers = new ethers.providers.Web3Provider(window.ethereum);
         await window.ethereum.enable();
         const signer = providers.getSigner();
@@ -46,7 +46,6 @@ const Create = () => {
           lock.unlockTime,
           lock.tokenAmount,
           lock.tokenAddress,
-          { gasLimit: 50000 }
         )
         // await sendTX.wait()
         console.log(sendTX)
