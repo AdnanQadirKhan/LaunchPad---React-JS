@@ -167,7 +167,7 @@ const Create = () => {
             setStatus("Wait...")
 
             try {
-                const data = "0x0130a620B2d9Af0a0Fa23Ef57b12082825D85cE1";
+                const data = "0x6D4c5f83e8C8819c08d595DAd2799F3C0De5Da67";
                 const providers = new ethers.providers.Web3Provider(window.ethereum);
                 await window.ethereum.enable();
                 const signer = providers.getSigner();
@@ -186,7 +186,7 @@ const Create = () => {
                     parseInt(presale.tokens),
                     presale.liquidity,
                     presale.whitelistAddress == null ? false : true,
-                    presale.whitelistAddress ,
+                    presale.whitelistAddress == null || undefined ?[] : (presale.whitelistAddress).split(',') ,
                     presale.liquidityDate
                 )
                 const sendTX = await contract.createPresale(

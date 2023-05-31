@@ -23,7 +23,7 @@ const Create = (props) => {
         // setStatus("Wait...")
 
         try {
-          const new_data = "0x0130a620B2d9Af0a0Fa23Ef57b12082825D85cE1";
+          const new_data = "0x6D4c5f83e8C8819c08d595DAd2799F3C0De5Da67";
             const providers = new ethers.providers.Web3Provider(window.ethereum);
             await window.ethereum.enable();
             const signer = providers.getSigner();
@@ -31,20 +31,16 @@ const Create = (props) => {
             console.log("CA", data.contractAddress);
             console.log("Crypto", bnb.crypto);
             const sendTX = await contract.contribute(
-              { value: ethers.utils.parseEther('0.001') },
               data.contractAddress,
-              parseInt(bnb.crypto)
-              
+              parseInt(bnb.crypto),
             )
             console.log(sendTX)
             const check = sendTX.toString()
             console.log(check)
-            // setStatus("successfully sent transaction")
         }
         catch (error) {
 
                 console.log(error)
-                // setStatus("Something went wrong")
         }
         // return false;
     }

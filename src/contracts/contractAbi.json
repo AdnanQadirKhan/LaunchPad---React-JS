@@ -50,11 +50,6 @@
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "_investor",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
